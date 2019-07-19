@@ -1,5 +1,7 @@
 import React from 'react';
 import {Navbar, NavItem, Icon} from 'react-materialize';
+import {connect} from "react-redux";
+import {logIn} from "../redux/actions";
 
 
 class NavBar extends React.Component {
@@ -23,7 +25,10 @@ class NavBar extends React.Component {
                         refresh
                     </Icon>
                 </NavItem>
-                <NavItem href="get-started.html">
+                <NavItem href={this.state} onClick={() => {
+                    console.log(this.props.user);
+                    this.props.logIn("test");
+                }}>
                     <Icon>
                         person
                     </Icon>
@@ -31,6 +36,13 @@ class NavBar extends React.Component {
             </Navbar>
         )
     }
+
+
 }
 
-export default NavBar;
+const mapStateToProps = state => {
+    return state;
+};
+
+
+export default connect(mapStateToProps, {logIn})(NavBar);

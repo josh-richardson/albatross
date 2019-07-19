@@ -7,12 +7,11 @@ import 'materialize-css/dist/css/materialize.min.css';
 import 'material-design-icons/iconfont/material-icons.css'
 import NavBar from "./components/NavBar";
 
-
 const arweave = Arweave.init({
     host: document.location.host.indexOf('localhost') !== -1 ? 'arweave.net' : document.location.host,
     port: 443,
     protocol: 'https'
-}); 
+});
 
 
 class MainApp extends React.Component {
@@ -33,11 +32,13 @@ class MainApp extends React.Component {
 
     render() {
         return (
+
             <div>
-                <NavBar />
+                <NavBar/>
                 <div className="App">
                     <header className="App-header">
-                        <svg width="80" height="80" data-jdenticon-value="tIf0wLp418uknaNKxi-GVUM-1Xh7jPyAfISoBozpICU"/>
+                        <svg width="80" height="80"
+                             data-jdenticon-value="tIf0wLp418uknaNKxi-GVUM-1Xh7jPyAfISoBozpICU"/>
                         <p className="app-label" rel="noopener noreferrer">
                             Some random wallet balance: {this.state.balance}
                         </p>
