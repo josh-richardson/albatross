@@ -1,0 +1,11 @@
+.albatross-logo {
+    max-height: 56px;
+    margin-top: 4px;
+    margin-left: 4px;
+    margin-right: 6px;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: row;
+}
