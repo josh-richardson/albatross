@@ -10,9 +10,10 @@
 
 .app-title {
     margin: 0;
-    padding-bottom: 5px;
+    padding-bottom: 8px;
     text-align: center;
     font-size: 1.2em;
+    color: black;
 }
 
 .app-image {
@@ -38,6 +39,7 @@
 }
 
 .app-badge:hover .app-tagline {
+    color: black;
     display: block;
     position: absolute;
     top: 20%;

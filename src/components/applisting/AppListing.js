@@ -1,13 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
-import { arweave } from "../../constants";
+import { arweave, testApps } from "../../constants";
 import "jdenticon";
 import { logOut } from "../../redux/actions";
-import "./Store.css";
+import "./AppListing.css";
 import AppBadge from "../appbadge/AppBadge";
-import AppListing from "../applisting/AppListing";
 
-class Store extends React.Component {
+class AppListing extends React.Component {
+
+
 
 
   constructor(props) {
@@ -27,11 +28,14 @@ class Store extends React.Component {
 
   render() {
     return (
-      <div>
-        <h2>Apps for {Store.capitalize(this.props.match.params.platform)}</h2>
 
-        <AppListing/>
 
+      <div className="app-listing">
+        <AppBadge app={testApps[0]}/>
+        <AppBadge app={testApps[1]}/>
+        <AppBadge app={testApps[2]}/>
+        <AppBadge app={testApps[3]}/>
+        <AppBadge app={testApps[4]}/>
       </div>
     );
   }
@@ -42,6 +46,5 @@ const mapStateToProps = state => {
 };
 
 export default connect(
-  mapStateToProps,
-  { logOut }
-)(Store);
+  mapStateToProps
+)(AppListing);
