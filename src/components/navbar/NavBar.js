@@ -49,8 +49,8 @@ class NavBar extends React.Component {
         <Link to="/index/">Chrome</Link>
         <Link to="/about/">Android</Link>
 
-        <Link to="/login/" >
-          {this.props.isLoggedIn === 1 ? (<span className="user-icon"><Icon>person</Icon> Account</span>) : "Login"}
+        <Link to={this.props.isLoggedIn ? "/profile/" : "/login/"} >
+          {this.props.isLoggedIn ? (<span className="user-icon"><Icon>person</Icon> My Profile</span>) : "Login"}
         </Link>
       </Navbar>
     );
