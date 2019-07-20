@@ -4,5 +4,14 @@
 }
 
 #content-wrap {
-    padding-bottom: 2.5rem;    /* Footer height */
+    padding-bottom: 2.5rem; /* Footer height */
+}
+
+.loader {
+    margin-top: 50px;
+}
+
+.loader > div {
+    display: block;
+    margin: auto;
 }

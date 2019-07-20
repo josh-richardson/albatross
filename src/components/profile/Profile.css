@@ -1,0 +1,23 @@
+.profile-header {
+    display: flex;
+
+    margin-bottom: 20px;
+}
+
+.profile-extra {
+    margin-left: 5px;
+    font-size: 0.8em;
+}
+
+.profile-extra > p {
+    margin: 0 0 3px;
+}
+
+.profile-extra > h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.btn {
+    margin-right: 10px;
+}

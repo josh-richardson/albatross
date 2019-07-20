@@ -1,16 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
-import { logIn } from "../redux/actions";
+import { logIn } from "../../redux/actions";
 import Dropzone from "./dropzone/Dropzone";
 import Materialize from "materialize-css";
-import { arweave } from "../constants";
+import { arweave } from "../../constants";
 
 class Login extends React.Component {
 
 
   constructor(props) {
     super(props);
-    this.performLogin = this.performLogin.bind(this);
+    this.retrieveProfile = this.performLogin.bind(this);
   }
 
   performLogin(file) {
@@ -32,9 +32,13 @@ class Login extends React.Component {
               }
               let ar = arweave.ar.winstonToAr(balance);
 
-              this.props.logIn(wallet, address);
-
-              this.setState({ balance: ar });
+              console.log(this.props);
+              Materialize.toast({
+                html: "Login successful!",
+                classes: "green darken-2"
+              });
+              this.props.logIn(wallet, address, balance);
+              this.props.history.push("/profile/");
             });
 
 
