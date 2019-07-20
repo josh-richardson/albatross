@@ -4,7 +4,7 @@ import { arweave } from "../../constants";
 import "jdenticon";
 import { logOut } from "../../redux/actions";
 import "./Profile.css";
-import AppListing from "../AppListing/AppListing";
+import AppListing from "../applisting/AppListing";
 
 class Profile extends React.Component {
 

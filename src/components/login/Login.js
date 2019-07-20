@@ -30,8 +30,6 @@ class Login extends React.Component {
                   classes: "yellow darken-4"
                 });
               }
-              let ar = arweave.ar.winstonToAr(balance);
-
               console.log(this.props);
               Materialize.toast({
                 html: "Login successful!",

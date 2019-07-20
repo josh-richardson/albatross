@@ -12,17 +12,13 @@ import Footer from "./components/footer/Footer";
 import Profile from "./components/profile/Profile";
 import SetUser from "./components/setuser/SetUser";
 import Store from "./components/store/Store";
+import AppDetail from "./components/appdetail/AppDetail";
 
 function Index() {
-  return <h2>Home</h2>;
-}
-
-function About() {
-  return <h2>About</h2>;
+  return <Redirect from="/" to="/store/firefox"/>;
 }
 
 class MainApp extends React.Component {
-
   render() {
     return (
       <div className="page-container">
@@ -30,13 +26,12 @@ class MainApp extends React.Component {
           <NavBar/>
           <div className="section">
             <div className="container">
-              <Redirect from="/" to="/store/firefox" />
-              <Route path="/index/" exact component={Index}/>
-              <Route path="/about/" component={About}/>
+              <Route path="/" exact component={Index}/>
               <Route path="/login/" component={Login}/>
               <Route path="/profile/" component={Profile}/>
               <Route path="/setuser/" component={SetUser}/>
               <Route path="/store/:platform" component={Store}/>
+              <Route path="/details/:uuid" component={AppDetail}/>
             </div>
           </div>
         </div>
