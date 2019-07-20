@@ -1,12 +1,4 @@
-
 import Arweave from "arweave/web";
-
-export const VISIBILITY_FILTERS = {
-  ALL: "all",
-  COMPLETED: "completed",
-  INCOMPLETE: "incomplete"
-};
-
 
 export const arweave = Arweave.init({
   host:

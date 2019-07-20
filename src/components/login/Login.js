@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { logIn } from "../../redux/actions";
-import Dropzone from "./dropzone/Dropzone";
+import Dropzone from "../dropzone/Dropzone";
 import Materialize from "materialize-css";
 import { arweave } from "../../constants";
 
@@ -30,7 +30,6 @@ class Login extends React.Component {
                   classes: "yellow darken-4"
                 });
               }
-              console.log(this.props);
               Materialize.toast({
                 html: "Login successful!",
                 classes: "green darken-2"
@@ -38,9 +37,6 @@ class Login extends React.Component {
               this.props.logIn(wallet, address, balance);
               this.props.history.push("/profile/");
             });
-
-
-
         });
       } catch (err) {
         Materialize.toast({
@@ -55,9 +51,9 @@ class Login extends React.Component {
     return (
       <div>
         <h1>Log In</h1>
-        <Dropzone performLogin={(file) => {
-          this.performLogin(file);
-        }}/>
+        <Dropzone onSelected={(files) => {
+          this.performLogin(files[0]);
+        }} filename="keyfile"/>
       </div>
     );
   }
