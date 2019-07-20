@@ -36,7 +36,7 @@ class Profile extends React.Component {
     return (
       <div>
         <div className="profile-header">
-          <svg width="80" height="80" data-jdenticon-value="tIf0wLp418uknaNKxi-GVUM-1Xh7jPyAfISoBozpICU"/>
+          <svg width="80" height="80" data-jdenticon-value={this.props.address}/>
           <div className="profile-extra">
             <h4>{this.state.username}</h4>
             <p>Address: {this.props.address}</p>
@@ -49,7 +49,9 @@ class Profile extends React.Component {
           this.props.history.push("/store/firefox");
         }}>Log Out
         </button>
-        <button className="blue waves-effect waves-light btn">Submit an App</button>
+        <button className="blue waves-effect waves-light btn" onClick={() => {
+          this.props.history.push("/submit/");
+        }}>Submit an App</button>
         <button className="blue waves-effect waves-light btn">Update an App</button>
 
         <h4>Submitted Apps:</h4>

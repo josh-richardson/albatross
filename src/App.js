@@ -13,6 +13,7 @@ import Profile from "./components/profile/Profile";
 import SetUser from "./components/setuser/SetUser";
 import Store from "./components/store/Store";
 import AppDetail from "./components/appdetail/AppDetail";
+import SubmitApp from "./components/submitapp/SubmitApp";
 
 function Index() {
   return <Redirect from="/" to="/store/firefox"/>;
@@ -32,6 +33,7 @@ class MainApp extends React.Component {
               <Route path="/setuser/" component={SetUser}/>
               <Route path="/store/:platform" component={Store}/>
               <Route path="/details/:uuid" component={AppDetail}/>
+              <Route path="/submit/" component={SubmitApp}/>
             </div>
           </div>
         </div>

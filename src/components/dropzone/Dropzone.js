@@ -4,7 +4,7 @@ import "./Dropzone.css";
 
 const Dropzone = (props) => {
   const onDrop = useCallback(acceptedFiles => {
-    props.performLogin(acceptedFiles[0]);
+    props.onSelected(acceptedFiles);
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -13,8 +13,8 @@ const Dropzone = (props) => {
       <input {...getInputProps()} />
       {
         isDragActive ?
-          <p>Drop the keyfile here ...</p> :
-          <p>Drag 'n' drop your keyfile here, or click to select it...</p>
+          <p>Drop the {props.filename} here ...</p> :
+          <p>Drag 'n' drop your {props.filename} here, or click to select...</p>
       }
 
     </div>
