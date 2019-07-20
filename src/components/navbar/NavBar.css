@@ -17,3 +17,20 @@
 li {
     max-height: 60px;
 }
+
+
+.material-icon {
+    height: 26px;
+    width: 26px;
+    max-width: 26px;
+    max-height: 26px;
+    transform: translateY(8px);
+    color: white;
+    fill: white;
+}
+
+
+.person-icon {
+    transform: translateY(18px);
+    margin-right: 5px;
+}
