@@ -23,7 +23,7 @@ class NavBar extends React.Component {
           <span>
             <span className="logo-container">
               <AlbatrossIcon/>
-              <a href="#/index/">Albatross</a>
+              <a href="#/store/firefox">Albatross</a>
             </span>
           </span>
         }
