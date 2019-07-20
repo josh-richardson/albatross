@@ -3,7 +3,7 @@ import { Navbar, NavItem, Icon } from "react-materialize";
 import { connect } from "react-redux";
 import { logIn } from "../../redux/actions";
 import "./NavBar.css";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import AlbatrossIcon from "./AlbatrossIcon";
 
 class NavBar extends React.Component {
@@ -45,13 +45,13 @@ class NavBar extends React.Component {
         }}>
           <Icon>search</Icon>
         </NavItem>
-        <Link to="/about/">Firefox</Link>
-        <Link to="/index/">Chrome</Link>
-        <Link to="/about/">Android</Link>
+        <NavLink exact={true} activeClassName='blue darken-3' to="/store/firefox">Firefox</NavLink>
+        <NavLink exact={true} activeClassName='blue darken-3' to="/store/chrome">Chrome</NavLink>
+        <NavLink exact={true} activeClassName='blue darken-3' to="/store/android">Android</NavLink>
 
-        <Link to={this.props.isLoggedIn ? "/profile/" : "/login/"} >
+        <NavLink exact={true} activeClassName='blue darken-3' to={this.props.isLoggedIn ? "/profile/" : "/login/"} >
           {this.props.isLoggedIn ? (<span className="user-icon"><Icon>person</Icon> My Profile</span>) : "Login"}
-        </Link>
+        </NavLink>
       </Navbar>
     );
   }

@@ -10,7 +10,7 @@ const Footer = () => {
       <div className="container">
         <hr/>
         <div className="left">
-          <p>Store Version: v0.1</p>
+          <p>Albatross Version: 0.1</p>
         </div>
 
         <div className="right">
