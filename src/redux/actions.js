@@ -1,9 +1,10 @@
-import { LOG_IN, LOG_OUT, INVALID_WALLET } from "./actionTypes";
+import { LOG_IN, LOG_OUT } from "./actionTypes";
 
-export const logIn = wallet => ({
+export const logIn = (wallet, pubKey) => ({
   type: LOG_IN,
   payload: {
-    wallet: wallet
+    wallet: wallet,
+    pubKey: pubKey
   }
 });
 
