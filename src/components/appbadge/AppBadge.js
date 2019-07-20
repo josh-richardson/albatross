@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { arweave } from "../../constants";
 import "jdenticon";
 import { logOut } from "../../redux/actions";
-import "./Profile.css";
+import "./AppBadge.css";
 
-class Profile extends React.Component {
+class AppBadge extends React.Component {
 
 
   constructor(props) {
@@ -64,4 +64,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { logOut }
-)(Profile);
+)(AppBadge);
