@@ -4,9 +4,9 @@ import { arweave } from "../../constants";
 import "jdenticon";
 import { logOut } from "../../redux/actions";
 import "./Profile.css";
+import AppListing from "../AppListing/AppListing";
 
 class Profile extends React.Component {
-
 
   constructor(props) {
     super(props);
@@ -46,12 +46,16 @@ class Profile extends React.Component {
 
         <button className="blue waves-effect waves-light btn" onClick={() => {
           this.props.logOut();
-          this.props.history.push("/");
+          this.props.history.push("/store/firefox");
         }}>Log Out
         </button>
-        <button className="blue waves-effect waves-light btn">Submit App</button>
+        <button className="blue waves-effect waves-light btn">Submit an App</button>
+        <button className="blue waves-effect waves-light btn">Update an App</button>
 
         <h4>Submitted Apps:</h4>
+
+        <AppListing />
+
       </div>
     );
   }

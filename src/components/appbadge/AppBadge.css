@@ -1,26 +1,50 @@
-.profile-header {
-    padding: 20px;
-    display: flex;
+.app-badge {
     background-color: whitesmoke;
+    width: 220px;
     border-radius: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.11);
+    position: relative;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    float: left;
 }
 
-.profile-extra {
-    margin-left: 5px;
-    font-size: 0.8em;
+.app-title {
+    margin: 0;
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: 1.2em;
 }
 
-.profile-extra > p {
-    margin: 0 0 5px;
+.app-image {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    transition: .5s ease;
 }
 
-.profile-extra > h4 {
-    margin-top: 0;
-    margin-bottom: 5px;
+
+
+.app-tagline {
+    transition: .5s ease;
+    display: none;
+    margin: 0;
+    padding: 0;
+    width: 200px;
 }
 
-.btn {
-    margin-right: 10px;
+.app-badge:hover .app-image {
+    opacity: 0.1;
+    filter: grayscale(70) brightness(-50);
+
+}
+
+.app-badge:hover .app-tagline {
+    display: block;
+    position: absolute;
+    top: 20%;
+    margin: 10px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 3px;
 }

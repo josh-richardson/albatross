@@ -3,8 +3,8 @@
     min-height: 100vh;
 }
 
-#content-wrap {
-    padding-bottom: 2.5rem; /* Footer height */
+.content-wrapper {
+    padding-bottom: 5.5rem; /* Footer height */
 }
 
 .loader {
@@ -14,4 +14,9 @@
 .loader > div {
     display: block;
     margin: auto;
+}
+
+
+.container {
+    max-width: 960px !important;
 }

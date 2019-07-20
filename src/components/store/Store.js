@@ -4,6 +4,8 @@ import { arweave } from "../../constants";
 import "jdenticon";
 import { logOut } from "../../redux/actions";
 import "./Store.css";
+import AppBadge from "../appbadge/AppBadge";
+import AppListing from "../AppListing/AppListing";
 
 class Store extends React.Component {
 
@@ -15,8 +17,8 @@ class Store extends React.Component {
   }
 
   static capitalize(s) {
-    if (typeof s !== 'string') return '';
-    return s.charAt(0).toUpperCase() + s.slice(1)
+    if (typeof s !== "string") return "";
+    return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
   retrieveApps() {
@@ -26,7 +28,10 @@ class Store extends React.Component {
   render() {
     return (
       <div>
-        <h1>Apps for {Store.capitalize(this.props.match.params.platform)}</h1>
+        <h2>Apps for {Store.capitalize(this.props.match.params.platform)}</h2>
+
+        <AppListing/>
+
       </div>
     );
   }
