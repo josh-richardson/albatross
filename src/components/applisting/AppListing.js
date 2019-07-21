@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { arweave, testApps } from "../../constants";
+import { arweave } from "../../constants";
 import "jdenticon";
 import "./AppListing.css";
 import AppBadge from "../appbadge/AppBadge";
@@ -19,26 +19,22 @@ class AppListing extends React.Component {
     this.retrieveApps();
   }
 
-  static capitalize(s) {
-    if (typeof s !== "string") return "";
-    return s.charAt(0).toUpperCase() + s.slice(1);
-  }
 
   retrieveApps() {
-
-    arweave.arql({
-      op: "equals",
-      expr1: "store",
-      expr2: "albatross"
-    }).then(queryResult => {
-      queryResult.forEach(tx => {
-        arweave.transactions.get(tx).then(txResult => {
-          const txObject = JSON.parse(txResult.get("data", { decode: true, string: true }));
-          this.props.addApp(txObject);
+    if (this.props.apps.length === 0) {
+      arweave.arql({
+        op: "equals",
+        expr1: "store",
+        expr2: "albatross-v1"
+      }).then(queryResult => {
+        queryResult.forEach(tx => {
+          arweave.transactions.get(tx).then(txResult => {
+            const txObject = JSON.parse(txResult.get("data", { decode: true, string: true }));
+            this.props.addApp(txObject);
+          });
         });
       });
-    });
-
+    }
   }
 
   render() {

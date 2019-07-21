@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import "jdenticon";
 import { logOut } from "../../redux/actions";
 import "./SubmitApp.css";
-import { TextInput, Textarea } from "react-materialize";
+import { TextInput, Textarea, Select } from "react-materialize";
 import Dropzone from "../dropzone/Dropzone";
-import { arweave } from "../../constants";
+import { arweave, appTypes, capitalize } from "../../constants";
 import Materialize from "materialize-css";
 import { BounceLoader } from "react-spinners";
 
@@ -36,13 +36,14 @@ class SubmitApp extends React.Component {
   }
 
   submitApp() {
-    this.setState({detailImages: this.state.detailImages.split(" ")});
+
 
     let appRepr = Object.assign(this.state, {
       authorAddr: this.props.address,
       author: this.state.username,
       updated: new Date(),
       version: 1,
+      detailImages: this.state.detailImages.split(" "),
       fromStore: false,
       storeUrl: null,
       id: this.uuidv4(),
@@ -60,7 +61,7 @@ class SubmitApp extends React.Component {
       data: JSON.stringify(appRepr)
     }, this.props.wallet).then(tx => {
       tx.addTag("Content-Type", "application/json");
-      tx.addTag("store", "albatross");
+      tx.addTag("store", "albatross-v1");
 
       arweave.transactions.sign(tx, this.props.wallet).then(() => {
         console.log("1");
@@ -143,7 +144,16 @@ class SubmitApp extends React.Component {
           <h1>Submit an App!</h1>
           <TextInput label="App Name" onChange={this.handleChange} name="name"/>
           <TextInput label="App Tagline" onChange={this.handleChange} name="tagline"/>
-          <TextInput label="App Category" onChange={this.handleChange} name="category"/>
+
+          <p>App Category:</p>
+          <Select onChange={this.handleChange} name="category">
+            {appTypes.map(appType => {
+              return (<option key={appType} value={appType.toLowerCase()}>
+                {capitalize(appType)}
+              </option>);
+            })}
+          </Select>
+
           <TextInput label="App Detail Images (space-separated URLs)" onChange={this.handleChange} name="detailImages"/>
           <p>App Icon:</p>
           <Dropzone onSelected={(files) => {
@@ -154,7 +164,21 @@ class SubmitApp extends React.Component {
           <Dropzone onSelected={(files) => {
             this.handleFileUpload(files, "image");
           }} filename="small image"/>
-          <TextInput label="App Type" onChange={this.handleChange} name="type"/>
+
+          <p>App platform:</p>
+          <Select onChange={this.handleChange} name="type">
+
+            <option value="firefox">
+              Firefox
+            </option>
+            <option value="chrome">
+              Chrome
+            </option>
+            <option value="android">
+              Android
+            </option>
+          </Select>
+
           <Textarea label="App Description (multiline)" onChange={this.handleChange} name="description"/>
 
           <p>App file (under 2mb):</p>
@@ -162,7 +186,7 @@ class SubmitApp extends React.Component {
             this.handleFileUpload(files, "package");
           }} filename="app"/>
 
-          <button className="blue waves-effect waves-light btn right submit-app-button" onClick={() => {
+          <button className="blue waves-effect waves-light btn submit-app-button" onClick={() => {
             this.submitApp();
           }}>Submit App
           </button>

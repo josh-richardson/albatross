@@ -1,7 +1,6 @@
 import React from "react";
 import "jdenticon";
 import "./AppDetail.css";
-import { testApps } from "../../constants";
 import { BounceLoader } from "react-spinners";
 import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
