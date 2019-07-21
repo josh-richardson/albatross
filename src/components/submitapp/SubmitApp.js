@@ -14,6 +14,10 @@ class SubmitApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = { username: "unset", deploying: false, platform: 'firefox', category: 'accessibility' };
+    this.submitApp = this.submitApp.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleFileUpload = this.handleFileUpload.bind(this);
+    this.retrieveProfile = this.retrieveProfile.bind(this);
 
   }
 
@@ -21,10 +25,6 @@ class SubmitApp extends React.Component {
     if (!this.props.isLoggedIn) {
       this.props.history.push("/login/");
     }
-    this.submitApp = this.submitApp.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleFileUpload = this.handleFileUpload.bind(this);
-    this.retrieveProfile = this.retrieveProfile.bind(this);
     this.retrieveProfile();
   }
 
