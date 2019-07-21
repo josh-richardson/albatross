@@ -12,11 +12,11 @@ class AppListing extends React.Component {
   constructor(props) {
     super(props);
     this.state = { loading: true };
-
+    this.retrieveApps = this.retrieveApps.bind(this);
   }
 
   componentDidMount() {
-    this.retrieveApps = this.retrieveApps.bind(this);
+
     this.retrieveApps();
   }
 

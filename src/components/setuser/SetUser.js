@@ -12,6 +12,11 @@ class SetUser extends React.Component {
   constructor(props) {
     super(props);
     this.state = { username: undefined };
+    this.checkUsername = this.checkUsername.bind(this);
+
+    this.handleChange = this.handleChange.bind(this);
+    this.updateUsername = this.updateUsername.bind(this);
+
   }
 
 
@@ -19,10 +24,7 @@ class SetUser extends React.Component {
     if (!this.props.isLoggedIn) {
       this.props.history.push("/login/");
     }
-    this.checkUsername = this.checkUsername.bind(this);
     this.checkUsername();
-    this.handleChange = this.handleChange.bind(this);
-    this.updateUsername = this.updateUsername.bind(this);
   }
 
   checkUsername() {
