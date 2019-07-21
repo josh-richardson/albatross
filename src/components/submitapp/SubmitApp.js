@@ -35,7 +35,6 @@ class SubmitApp extends React.Component {
     });
   }
 
-
   submitApp() {
     let appRepr = Object.assign(this.state, {
       authorAddr: this.props.address,
@@ -65,23 +64,16 @@ class SubmitApp extends React.Component {
         console.log("1");
         arweave.transactions.post(tx).then(response => {
           if (response.status === 200) {
-            console.log("2");
             let checkInterval = setInterval(() => {
               arweave.transactions.getStatus(tx.id).then(response => {
-                console.log("3");
                 if (response.status === 200) {
                   let packageTx = JSON.stringify({ "package": mPkg });
-                  console.log("4");
                   arweave.createTransaction({
                     data: packageTx
                   }, this.props.wallet).then(pTx => {
-                    console.log("5");
                     pTx.addTag("packageId", appRepr.id);
-                    console.log("6");
                     arweave.transactions.sign(pTx, this.props.wallet).then(() => {
-                      console.log("7");
                       arweave.transactions.post(pTx).then(pResponse => {
-                        console.log("8");
                         clearInterval(checkInterval);
                         if (pResponse.status === 200) {
                           Materialize.toast({

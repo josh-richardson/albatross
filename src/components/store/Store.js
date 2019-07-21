@@ -27,9 +27,7 @@ class Store extends React.Component {
     return (
       <div>
         <h2>Apps for {Store.capitalize(this.props.match.params.platform)}</h2>
-
         <AppListing/>
-
       </div>
     );
   }
