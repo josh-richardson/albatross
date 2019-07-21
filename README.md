@@ -7,7 +7,7 @@ As of 23:59 EDT, current functionality exists here: https://arweave.net/MLMsOrBl
 
 Future versions will be deployed below, although technically not elligible to compete in the hackathon :(
 
-A version deployed at 03:04 EDT is available here, and is fully functional with the features shown below, and showcased in the demo video: https://arweave.net/NyBdl0I4rcMTcjeW03a5dlavuFIXWkhNHQsOHX1BlDk
+A version deployed at 04:10 EDT is available here, and is fully functional with the features shown below, and showcased in the demo video: https://arweave.net/lwmZivelMcNjt6gRiESSgsIAl8WpFpq679c_Pt7L900
 A convenient (centralized) redirect is available here: https://albatross.link
 
 A video demo is available here: https://www.youtube.com/watch?v=DXyY1X9m0Pc
