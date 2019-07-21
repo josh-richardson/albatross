@@ -1,10 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { arweave } from "../../constants";
 import "jdenticon";
 import { logOut } from "../../redux/actions";
 import "./Store.css";
-import AppBadge from "../appbadge/AppBadge";
 import AppListing from "../applisting/AppListing";
 
 class Store extends React.Component {

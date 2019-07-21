@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { arweave, testApps } from "../../constants";
 import "jdenticon";
-import { logOut } from "../../redux/actions";
 import "./AppListing.css";
 import AppBadge from "../appbadge/AppBadge";
 

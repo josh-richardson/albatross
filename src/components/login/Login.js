@@ -7,12 +7,6 @@ import { arweave } from "../../constants";
 
 class Login extends React.Component {
 
-
-  constructor(props) {
-    super(props);
-    this.retrieveProfile = this.performLogin.bind(this);
-  }
-
   performLogin(file) {
     const reader = new FileReader();
     reader.readAsBinaryString(file);

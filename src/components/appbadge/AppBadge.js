@@ -5,16 +5,6 @@ import { Link } from "react-router-dom";
 
 class AppBadge extends React.Component {
 
-
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-
-  }
-
-
   render() {
     return (
       <div className="app-badge">
