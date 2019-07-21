@@ -3,7 +3,7 @@ import "jdenticon";
 import "./AppDetail.css";
 import { testApps } from "../../constants";
 import { BounceLoader } from "react-spinners";
-import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from "pure-react-carousel";
+import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
 
 class AppDetail extends React.Component {
@@ -50,7 +50,7 @@ class AppDetail extends React.Component {
           >
             <Slider>
               {this.state.app.detailImages.map(src => {
-                return <Slide><img src={src} alt="App Image"/></Slide>;
+                return <Slide><img src={src} alt="App Screenshots"/></Slide>;
               })}
             </Slider>
           </CarouselProvider>

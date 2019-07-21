@@ -20,6 +20,11 @@ function Index() {
 }
 
 class MainApp extends React.Component {
+
+  componentWillMount() {
+    document.title = "Albatross App Store";
+  }
+
   render() {
     return (
       <div className="page-container">
