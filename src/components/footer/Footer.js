@@ -14,8 +14,9 @@ const Footer = () => {
         </div>
 
         <div className="right">
-          <ArweaveIcon/>
-          <GithubIcon/>
+          <a href="https://arweave.org"><ArweaveIcon/></a>
+          <a href="https://github.com/josh-richardson/albatross"><GithubIcon/></a>
+
         </div>
       </div>
 
