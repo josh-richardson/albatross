@@ -4,13 +4,14 @@ import { arweave, testApps } from "../../constants";
 import "jdenticon";
 import "./AppListing.css";
 import AppBadge from "../appbadge/AppBadge";
+import { addApp } from "../../redux/actions";
 
 class AppListing extends React.Component {
 
 
   constructor(props) {
     super(props);
-    this.state = { loading: true, apps: [] };
+    this.state = { loading: true };
     this.retrieveApps = this.retrieveApps.bind(this);
   }
 
@@ -33,7 +34,7 @@ class AppListing extends React.Component {
       queryResult.forEach(tx => {
         arweave.transactions.get(tx).then(txResult => {
           const txObject = JSON.parse(txResult.get("data", { decode: true, string: true }));
-          this.setState(prevState => ({ apps: [...prevState.apps, txObject] }));
+          this.props.addApp(txObject);
         });
       });
     });
@@ -44,7 +45,7 @@ class AppListing extends React.Component {
     return (
       <div className="app-listing">
 
-        {this.state.apps && this.state.apps.map(app => {
+        {this.props.apps && this.props.apps.map(app => {
           return <AppBadge key={app.id} app={app}/>;
         })}
 
@@ -54,9 +55,10 @@ class AppListing extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.user;
+  return state.apps;
 };
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  { addApp }
 )(AppListing);

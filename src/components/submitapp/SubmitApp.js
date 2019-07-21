@@ -36,6 +36,8 @@ class SubmitApp extends React.Component {
   }
 
   submitApp() {
+    this.setState({detailImages: this.state.detailImages.split(" ")});
+
     let appRepr = Object.assign(this.state, {
       authorAddr: this.props.address,
       author: this.state.username,

@@ -5,6 +5,8 @@ import { testApps } from "../../constants";
 import { BounceLoader } from "react-spinners";
 import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
+import { connect } from "react-redux";
+import { addApp } from "../../redux/actions";
 
 class AppDetail extends React.Component {
 
@@ -15,7 +17,7 @@ class AppDetail extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ app: testApps.filter(x => x.id === this.props.match.params.uuid)[0], loading: false });
+    this.setState({ app: this.props.apps.filter(x => x.id === this.props.match.params.uuid)[0], loading: false });
   }
 
 
@@ -67,4 +69,11 @@ class AppDetail extends React.Component {
   }
 }
 
-export default AppDetail;
+const mapStateToProps = state => {
+  return state.apps;
+};
+
+export default connect(
+  mapStateToProps,
+  { addApp }
+)(AppDetail);
