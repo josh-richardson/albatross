@@ -7,6 +7,7 @@ import "pure-react-carousel/dist/react-carousel.es.css";
 import { connect } from "react-redux";
 import { addApp } from "../../redux/actions";
 import { arweave } from "../../constants";
+import Materialize from "materialize-css";
 
 class AppDetail extends React.Component {
 
@@ -27,6 +28,11 @@ class AppDetail extends React.Component {
       expr1: "packageId",
       expr2: this.state.app.id
     }).then(queryResult => {
+      if (queryResult.length === 0) {
+        Materialize.toast({
+          html: "Could not retrieve this app. If it's new, it may not have been mined yet!"
+        });
+      }
       queryResult.forEach(tx => {
         arweave.transactions.get(tx).then(txResult => {
           const txObject = JSON.parse(txResult.get("data", { decode: true, string: true }));
