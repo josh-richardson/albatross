@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import "jdenticon";
-import { logOut } from "../../redux/actions";
+import { logOut, resetApps } from "../../redux/actions";
 import "./SubmitApp.css";
 import { TextInput, Textarea, Select } from "react-materialize";
 import Dropzone from "../dropzone/Dropzone";
@@ -78,6 +78,7 @@ class SubmitApp extends React.Component {
                       arweave.transactions.post(pTx).then(pResponse => {
                         clearInterval(checkInterval);
                         if (pResponse.status === 200) {
+                          this.props.resetApps();
                           Materialize.toast({
                             html: "App successfully uploaded to Arweave!"
                           });
@@ -202,5 +203,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { logOut }
+  { resetApps }
 )(SubmitApp);

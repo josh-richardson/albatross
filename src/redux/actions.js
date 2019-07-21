@@ -1,4 +1,4 @@
-import { ADD_APP, LOG_IN, LOG_OUT } from "./actionTypes";
+import { ADD_APP, LOG_IN, LOG_OUT, RESET_APPS } from "./actionTypes";
 
 export const logIn = (wallet, pubKey, balance) => ({
   type: LOG_IN,
@@ -14,6 +14,10 @@ export const addApp = (app) => ({
   payload: {
     app: app
   }
+});
+
+export const resetApps = () => ({
+  type: RESET_APPS
 });
 
 
