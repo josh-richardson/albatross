@@ -13,8 +13,8 @@ class SubmitApp extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { username: "unset", deploying: false };
-    this.retrieveProfile = this.retrieveProfile.bind(this);
+    this.state = { username: "unset", deploying: false, platform: 'firefox', category: 'accessibility' };
+
   }
 
   componentDidMount() {
@@ -24,6 +24,7 @@ class SubmitApp extends React.Component {
     this.submitApp = this.submitApp.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFileUpload = this.handleFileUpload.bind(this);
+    this.retrieveProfile = this.retrieveProfile.bind(this);
     this.retrieveProfile();
   }
 
@@ -50,7 +51,6 @@ class SubmitApp extends React.Component {
       debug: true
     });
 
-
     const mPkg = this.state.package;
     delete appRepr.username;
     delete appRepr.package;
@@ -61,10 +61,9 @@ class SubmitApp extends React.Component {
       data: JSON.stringify(appRepr)
     }, this.props.wallet).then(tx => {
       tx.addTag("Content-Type", "application/json");
-      tx.addTag("store", "albatross-v1");
+      tx.addTag("store", "albatross-v2-beta");
 
       arweave.transactions.sign(tx, this.props.wallet).then(() => {
-        console.log("1");
         arweave.transactions.post(tx).then(response => {
           if (response.status === 200) {
             let checkInterval = setInterval(() => {
@@ -166,7 +165,7 @@ class SubmitApp extends React.Component {
           }} filename="small image"/>
 
           <p>App platform:</p>
-          <Select onChange={this.handleChange} name="type">
+          <Select onChange={this.handleChange} name="platform">
 
             <option value="firefox">
               Firefox

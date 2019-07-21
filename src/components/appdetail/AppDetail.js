@@ -6,6 +6,7 @@ import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import { connect } from "react-redux";
 import { addApp } from "../../redux/actions";
+import { arweave } from "../../constants";
 
 class AppDetail extends React.Component {
 
@@ -13,12 +14,28 @@ class AppDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = { app: null, loading: true };
+
   }
 
   componentDidMount() {
     this.setState({ app: this.props.apps.filter(x => x.id === this.props.match.params.uuid)[0], loading: false });
   }
 
+  installApp() {
+    arweave.arql({
+      op: "equals",
+      expr1: "packageId",
+      expr2: this.state.app.id
+    }).then(queryResult => {
+      queryResult.forEach(tx => {
+        arweave.transactions.get(tx).then(txResult => {
+          const txObject = JSON.parse(txResult.get("data", { decode: true, string: true }));
+          console.log(txObject);
+          window.location.href = txObject.package;
+        });
+      });
+    });
+  }
 
   render() {
     return (
@@ -30,7 +47,7 @@ class AppDetail extends React.Component {
             color={"#123abc"}
           />
         </div> : <div>
-          <button className="blue waves-effect waves-light btn app-install-button" onClick={this.updateUsername}>Install
+          <button className="blue waves-effect waves-light btn app-install-button" onClick={() => {this.installApp()}}>Install
             Now
           </button>
           <div className="app-header-container">
@@ -41,8 +58,6 @@ class AppDetail extends React.Component {
 
           <p><span className="app-info">Author: {this.state.app.author} <span className="app-author">({this.state.app.authorAddr})</span></span> | <span
             className="app-info">Category: {this.state.app.category}</span></p>
-
-
           <CarouselProvider
             naturalSlideWidth={100}
             naturalSlideHeight={125}
