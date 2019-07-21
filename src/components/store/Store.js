@@ -12,19 +12,13 @@ class Store extends React.Component {
   constructor(props) {
     super(props);
     this.state = { loading: true };
-    this.retrieveApps = this.retrieveApps.bind(this);
-  }
-
-
-  retrieveApps() {
-
   }
 
   render() {
     return (
       <div>
         <h2>Apps for {capitalize(this.props.match.params.platform)}</h2>
-        <AppListing/>
+        <AppListing platform={this.props.match.params.platform}/>
       </div>
     );
   }

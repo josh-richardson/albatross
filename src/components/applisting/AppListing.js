@@ -12,10 +12,11 @@ class AppListing extends React.Component {
   constructor(props) {
     super(props);
     this.state = { loading: true };
-    this.retrieveApps = this.retrieveApps.bind(this);
+
   }
 
   componentDidMount() {
+    this.retrieveApps = this.retrieveApps.bind(this);
     this.retrieveApps();
   }
 
@@ -25,7 +26,7 @@ class AppListing extends React.Component {
       arweave.arql({
         op: "equals",
         expr1: "store",
-        expr2: "albatross-v1"
+        expr2: "albatross-v2-beta"
       }).then(queryResult => {
         queryResult.forEach(tx => {
           arweave.transactions.get(tx).then(txResult => {
@@ -38,13 +39,19 @@ class AppListing extends React.Component {
   }
 
   render() {
+    let relevantApps = this.props.apps;
+
+    if (this.props.platform) {
+      relevantApps = relevantApps.filter(app => app.platform.toLowerCase() === this.props.platform.toLowerCase());
+    } else if (this.props.address) {
+      relevantApps = relevantApps.filter(app => app.authorAddr.toLowerCase() === this.props.address.toLowerCase());
+    }
     return (
       <div className="app-listing">
 
-        {this.props.apps && this.props.apps.map(app => {
+        {relevantApps && relevantApps.map(app => {
           return <AppBadge key={app.id} app={app}/>;
         })}
-
       </div>
     );
   }

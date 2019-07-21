@@ -11,7 +11,7 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = { username: "unset", loading: true };
-    this.retrieveProfile = this.retrieveProfile.bind(this);
+
   }
 
   componentDidMount() {
@@ -19,7 +19,7 @@ class Profile extends React.Component {
     if (!this.props.isLoggedIn) {
       this.props.history.push("/login/");
     }
-
+    this.retrieveProfile = this.retrieveProfile.bind(this);
     this.retrieveProfile();
   }
 
@@ -56,7 +56,7 @@ class Profile extends React.Component {
 
         <h4>Submitted Apps:</h4>
 
-        <AppListing />
+        <AppListing address={this.props.address} />
 
       </div>
     );
