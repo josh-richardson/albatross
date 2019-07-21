@@ -6,6 +6,8 @@ import "./SubmitApp.css";
 import { TextInput, Textarea } from "react-materialize";
 import Dropzone from "../dropzone/Dropzone";
 import { arweave } from "../../constants";
+import Materialize from "materialize-css";
+import { BounceLoader } from "react-spinners";
 
 class SubmitApp extends React.Component {
 
@@ -26,9 +28,9 @@ class SubmitApp extends React.Component {
   }
 
   uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
       // eslint-disable-next-line no-mixed-operators
-      var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+      var r = Math.random() * 16 | 0, v = c === "x" ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
   }
@@ -45,21 +47,63 @@ class SubmitApp extends React.Component {
       id: this.uuidv4(),
       debug: true
     });
+
+
+    const mPkg = this.state.package;
     delete appRepr.username;
     delete appRepr.package;
+    delete appRepr.deploying;
 
-
-
+    this.setState({ deploying: true });
     arweave.createTransaction({
-      data: JSON.stringify(appRepr),
-    }, this.props.wallet).then((tx) => {
-      tx.addTag('Content-Type', 'application/json');
-      tx.addTag('store', 'albatross');
-      console.log(tx);
-      arweave.transactions.sign(tx, this.props.wallet).then(() => {
+      data: JSON.stringify(appRepr)
+    }, this.props.wallet).then(tx => {
+      tx.addTag("Content-Type", "application/json");
+      tx.addTag("store", "albatross");
 
+      arweave.transactions.sign(tx, this.props.wallet).then(() => {
+        console.log("1");
         arweave.transactions.post(tx).then(response => {
-          console.log(response);
+          if (response.status === 200) {
+            console.log("2");
+            let checkInterval = setInterval(() => {
+              arweave.transactions.getStatus(tx.id).then(response => {
+                console.log("3");
+                if (response.status === 200) {
+                  let packageTx = JSON.stringify({ "package": mPkg });
+                  console.log("4");
+                  arweave.createTransaction({
+                    data: packageTx
+                  }, this.props.wallet).then(pTx => {
+                    console.log("5");
+                    pTx.addTag("packageId", appRepr.id);
+                    console.log("6");
+                    arweave.transactions.sign(pTx, this.props.wallet).then(() => {
+                      console.log("7");
+                      arweave.transactions.post(pTx).then(pResponse => {
+                        console.log("8");
+                        clearInterval(checkInterval);
+                        if (pResponse.status === 200) {
+                          Materialize.toast({
+                            html: "App successfully uploaded to Arweave!"
+                          });
+                          this.props.history.push("/store/firefox");
+                        }
+                      });
+                    });
+                  });
+                } else if (response.status === 202) {
+                  Materialize.toast({
+                    html: "App is deploying. Progress is being made!"
+                  });
+                } else {
+                  Materialize.toast({
+                    html: "Something went wrong!"
+                  });
+                }
+              });
+            }, 15000);
+          }
         });
       });
     });
@@ -91,32 +135,45 @@ class SubmitApp extends React.Component {
   render() {
     return (
       <div>
-        <h1>Submit an App!</h1>
-        <TextInput label="App Name" onChange={this.handleChange} name="name"/>
-        <TextInput label="App Tagline" onChange={this.handleChange} name="tagline"/>
-        <TextInput label="App Category" onChange={this.handleChange} name="category"/>
-        <TextInput label="App Detail Images (space-separated URLs)" onChange={this.handleChange} name="detailImages"/>
-        <p>App Icon:</p>
-        <Dropzone onSelected={(files) => {
-          this.handleFileUpload(files, "icon");
-        }} filename="icon"/>
 
-        <p>App Small Image:</p>
-        <Dropzone onSelected={(files) => {
-          this.handleFileUpload(files, "image");
-        }} filename="small image"/>
-        <TextInput label="App Type" onChange={this.handleChange} name="type"/>
-        <Textarea label="App Description (multiline)" onChange={this.handleChange} name="description"/>
+        {this.state.deploying ? <div>
+          <div className="loader">
+            <BounceLoader
+              sizeUnit={"px"}
+              size={150}
+              color={"#123abc"}
+            />
+          </div>
+          <p className="center">Currently uploading your app... this may take up to 10 minutes.</p>
+        </div> : <div>
+          <h1>Submit an App!</h1>
+          <TextInput label="App Name" onChange={this.handleChange} name="name"/>
+          <TextInput label="App Tagline" onChange={this.handleChange} name="tagline"/>
+          <TextInput label="App Category" onChange={this.handleChange} name="category"/>
+          <TextInput label="App Detail Images (space-separated URLs)" onChange={this.handleChange} name="detailImages"/>
+          <p>App Icon:</p>
+          <Dropzone onSelected={(files) => {
+            this.handleFileUpload(files, "icon");
+          }} filename="icon"/>
 
-        <p>App file (under 2mb):</p>
-        <Dropzone onSelected={(files) => {
-          this.handleFileUpload(files, "package");
-        }} filename="app"/>
+          <p>App Small Image:</p>
+          <Dropzone onSelected={(files) => {
+            this.handleFileUpload(files, "image");
+          }} filename="small image"/>
+          <TextInput label="App Type" onChange={this.handleChange} name="type"/>
+          <Textarea label="App Description (multiline)" onChange={this.handleChange} name="description"/>
 
-        <button className="blue waves-effect waves-light btn right submit-app-button" onClick={() => {
-          this.submitApp();
-        }}>Submit App
-        </button>
+          <p>App file (under 2mb):</p>
+          <Dropzone onSelected={(files) => {
+            this.handleFileUpload(files, "package");
+          }} filename="app"/>
+
+          <button className="blue waves-effect waves-light btn right submit-app-button" onClick={() => {
+            this.submitApp();
+          }}>Submit App
+          </button>
+        </div>}
+
       </div>
     );
   }
