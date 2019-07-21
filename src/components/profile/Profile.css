@@ -1,0 +1,26 @@
+.profile-header {
+    padding: 20px;
+    display: flex;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.11);
+}
+
+.profile-extra {
+    margin-left: 5px;
+    font-size: 0.8em;
+}
+
+.profile-extra > p {
+    margin: 0 0 5px;
+}
+
+.profile-extra > h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.btn {
+    margin-right: 10px;
+}
