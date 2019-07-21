@@ -62,3 +62,12 @@ export const testApps = [
     type: "firefox"
   }
 ];
+
+
+export const appTypes = ['accessibility', 'blogging', 'developer tools', 'fun', 'news & weather', 'photos', 'productivity', 'Shopping', 'Social', 'Privacy'];
+
+
+export const capitalize = (s) => {
+  if (typeof s !== "string") return "";
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};

@@ -4,6 +4,7 @@ import "jdenticon";
 import { logOut } from "../../redux/actions";
 import "./Store.css";
 import AppListing from "../applisting/AppListing";
+import { capitalize } from "../../constants";
 
 class Store extends React.Component {
 
@@ -14,10 +15,6 @@ class Store extends React.Component {
     this.retrieveApps = this.retrieveApps.bind(this);
   }
 
-  static capitalize(s) {
-    if (typeof s !== "string") return "";
-    return s.charAt(0).toUpperCase() + s.slice(1);
-  }
 
   retrieveApps() {
 
@@ -26,7 +23,7 @@ class Store extends React.Component {
   render() {
     return (
       <div>
-        <h2>Apps for {Store.capitalize(this.props.match.params.platform)}</h2>
+        <h2>Apps for {capitalize(this.props.match.params.platform)}</h2>
         <AppListing/>
       </div>
     );
