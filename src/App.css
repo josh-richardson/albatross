@@ -1,0 +1,32 @@
+.page-container {
+    position: relative;
+    min-height: 100vh;
+}
+
+.content-wrapper {
+    padding-bottom: 5.5rem; /* Footer height */
+}
+
+.loader {
+    margin-top: 50px;
+}
+
+.loader > div {
+    display: block;
+    margin: auto;
+}
+
+
+.container {
+    max-width: 960px !important;
+}
+
+
+.input-field input[type=text]:focus + label, .materialize-textarea:focus:not([readonly]) + label {
+    color: #005eed !important;
+}
+
+.input-field input[type=text]:focus, .materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #005eed !important;
+    box-shadow: 0 1px 0 0 #005eed !important;
+}

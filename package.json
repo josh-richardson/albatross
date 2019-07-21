@@ -7,6 +7,7 @@
     "@svgr/webpack": "4.1.0",
     "@typescript-eslint/eslint-plugin": "1.6.0",
     "@typescript-eslint/parser": "1.6.0",
+    "arweave": "^1.4.0",
     "babel-eslint": "10.0.1",
     "babel-jest": "^24.8.0",
     "babel-loader": "8.0.5",
@@ -29,10 +30,13 @@
     "fs-extra": "7.0.1",
     "identity-obj-proxy": "3.0.0",
     "is-wsl": "^1.1.0",
+    "jdenticon": "^2.2.0",
     "jest": "24.7.1",
     "jest-environment-jsdom-fourteen": "0.1.0",
     "jest-resolve": "24.7.1",
     "jest-watch-typeahead": "0.3.0",
+    "material-design-icons": "^3.0.1",
+    "materialize-css": "^1.0.0-rc.2",
     "mini-css-extract-plugin": "0.5.0",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "pnp-webpack-plugin": "1.2.1",
@@ -41,10 +45,17 @@
     "postcss-normalize": "7.0.1",
     "postcss-preset-env": "6.6.0",
     "postcss-safe-parser": "4.0.1",
+    "pure-react-carousel": "^1.21.1",
     "react": "^16.8.6",
     "react-app-polyfill": "^1.0.1",
     "react-dev-utils": "^9.0.1",
     "react-dom": "^16.8.6",
+    "react-dropzone": "^10.1.5",
+    "react-materialize": "^3.3.3",
+    "react-redux": "^7.1.0",
+    "react-router-dom": "^5.0.1",
+    "react-spinners": "^0.5.13",
+    "redux": "^4.0.4",
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
     "semver": "6.0.0",
@@ -129,6 +140,7 @@
   },
   "devDependencies": {
     "html-webpack-inline-source-plugin": "0.0.10",
-    "html-webpack-plugin": "^4.0.0-beta.5"
+    "html-webpack-plugin": "^4.0.0-beta.5",
+    "prettier": "1.18.2"
   }
 }
