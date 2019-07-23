@@ -27,7 +27,7 @@ export const testApps = [
     type: "firefox",
     updated: "11/09/2019",
     version: 1,
-    id: "5ee5e25e-a7b5-4b94-8536-b4c8d43cd689",
+    id: "5ee5e25e-a7b5-4b94-8536-b4c8d43cd689"
   },
   {
     name: "LastPass",
@@ -63,8 +63,25 @@ export const testApps = [
   }
 ];
 
+export const testReviews = [
+  {
+    for: "fpjpFolZnMrg0Ncm02XcScw4gu-9biVhjldcgr_wlSw",
+    rating: 1,
+    review: "It's awful! Doesn't work!",
+    temp_addr: "77f9d0cc-9933-4410-bb86-50804a19ca54",
+    temp_username: "AngryUser"
+  },
+  {
+    for: "fpjpFolZnMrg0Ncm02XcScw4gu-9biVhjldcgr_wlSw",
+    rating: 5,
+    review: "I love it! Really useful!",
+    temp_addr: "a42aec0e-d486-4c1d-bbaf-63c62787b3fd",
+    temp_username: "HappyUser"
+  }
+];
 
-export const appTypes = ['accessibility', 'blogging', 'developer tools', 'fun', 'news & weather', 'photos', 'productivity', 'Shopping', 'Social', 'Privacy'];
+
+export const appTypes = ["accessibility", "blogging", "developer tools", "fun", "news & weather", "photos", "productivity", "Shopping", "Social", "Privacy"];
 
 
 export const capitalize = (s) => {
