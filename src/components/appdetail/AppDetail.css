@@ -39,3 +39,19 @@
     font-size: 0.8em;
     color: black;
 }
+
+
+.details-review-split {
+    margin-top: 20px;
+    display: flex;
+}
+
+.app-details {
+    flex-basis: 60%;
+    padding-right: 10px;
+}
+
+.app-reviews {
+    flex-basis: 40%;
+    padding-left: 10px;
+}

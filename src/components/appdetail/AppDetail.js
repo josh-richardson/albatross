@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { addApp } from "../../redux/actions";
 import { arweave } from "../../constants";
 import Materialize from "materialize-css";
+import ReviewListing from "../reviewlist/ReviewListing";
 
 class AppDetail extends React.Component {
 
@@ -53,7 +54,9 @@ class AppDetail extends React.Component {
             color={"#123abc"}
           />
         </div> : <div>
-          <button className="blue waves-effect waves-light btn app-install-button" onClick={() => {this.installApp()}}>Install
+          <button className="blue waves-effect waves-light btn app-install-button" onClick={() => {
+            this.installApp();
+          }}>Install
             Now
           </button>
           <div className="app-header-container">
@@ -62,7 +65,8 @@ class AppDetail extends React.Component {
           </div>
 
 
-          <p><span className="app-info">Author: {this.state.app.author} <span className="app-author">({this.state.app.authorAddr})</span></span> | <span
+          <p><span className="app-info">Author: {this.state.app.author} <span
+            className="app-author">({this.state.app.authorAddr})</span></span> | <span
             className="app-info">Category: {this.state.app.category}</span></p>
           <CarouselProvider
             naturalSlideWidth={100}
@@ -77,10 +81,20 @@ class AppDetail extends React.Component {
             </Slider>
           </CarouselProvider>
 
-          <p className="app-description">{this.state.app.description}</p>
-          <h5>Additional Details:</h5>
-          <p>Version: {this.state.app.version}</p>
-          {this.state.app.fromStore ? <p>From store: <a target="_blank" rel="noopener noreferrer" href={this.state.app.storeUrl}>{this.state.app.storeUrl}</a></p> : <span/>}
+          <div className="details-review-split">
+            <div className="app-details">
+              <p className="app-description">{this.state.app.description}</p>
+              <h5>Additional Details:</h5>
+              <p>Version: {this.state.app.version}</p>
+              {this.state.app.fromStore ? <p>From store: <a target="_blank" rel="noopener noreferrer"
+                                                            href={this.state.app.storeUrl}>{this.state.app.storeUrl}</a>
+              </p> : <span/>}
+
+            </div>
+            <div className="app-reviews">
+              <ReviewListing />
+            </div>
+          </div>
 
         </div>}
 
