@@ -10,16 +10,18 @@ A convenient (centralized) redirect is available here: https://albatross.link
 
 A video demo is available here: https://www.youtube.com/watch?v=DXyY1X9m0Pc
 
-#### Features for v0.1:
-- User Login
-- Uploading of Chrome/Firefox extensions
-- Listing of Chrome/Firefox extensions
-- Fully hosted on Arweave without any external dependencies
-
-#### Currently under works for v0.2:
-- Update notification: a statusbar at the top of the app store to notify users of newer versions of the app store which have subsequently been deployed
-- User reviews
-- Search & better filtering
+#### Changelog:
+##### v0.1:
+- [x] User Login
+- [x] Uploading of Chrome/Firefox extensions
+- [x] Listing of Chrome/Firefox extensions
+- [x] Fully hosted on Arweave without any external dependencies
+##### v0.2
+- [x] Various CSS fixes
+- [x] Fixed bug whereby a refresh on addon details page would cause an exception
+- [x] User reviews implemented
+- [ ] Update notification: a statusbar at the top of the app store to notify users of newer versions of the app store which have subsequently been deployed
+- [ ] Search & better filtering
 
 
 #### Planned features:

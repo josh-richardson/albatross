@@ -8,7 +8,8 @@ import { connect } from "react-redux";
 import { addApp } from "../../redux/actions";
 import { arweave } from "../../constants";
 import Materialize from "materialize-css";
-import ReviewListing from "../reviewlist/ReviewListing";
+import ReviewListing from "./reviewlist/ReviewListing";
+import { retrieveApps } from "../../utils";
 
 class AppDetail extends React.Component {
 
@@ -16,11 +17,17 @@ class AppDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = { app: null, loading: true };
-
   }
 
+
   componentDidMount() {
-    this.setState({ app: this.props.apps.filter(x => x.id === this.props.match.params.uuid)[0], loading: false });
+    if (this.props.apps.length !== 0) {
+      this.setState({ app: this.props.apps.filter(x => x.id === this.props.match.params.uuid)[0], loading: false });
+    } else {
+      retrieveApps(this.props.addApp).then(() => {
+        this.setState({ app: this.props.apps.filter(x => x.id === this.props.match.params.uuid)[0], loading: false });
+      });
+    }
   }
 
   installApp() {
@@ -76,7 +83,7 @@ class AppDetail extends React.Component {
           >
             <Slider>
               {this.state.app.detailImages.map(src => {
-                return <Slide><img src={src} alt="App Screenshots"/></Slide>;
+                return <Slide key={src}><img src={src} alt="App Screenshots"/></Slide>;
               })}
             </Slider>
           </CarouselProvider>
@@ -92,7 +99,7 @@ class AppDetail extends React.Component {
 
             </div>
             <div className="app-reviews">
-              <ReviewListing />
+              <ReviewListing/>
             </div>
           </div>
 
