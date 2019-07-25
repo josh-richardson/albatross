@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import "jdenticon";
-import { logOut, resetApps } from "../../redux/actions";
+import { resetApps } from "../../redux/actions";
 import "./SubmitApp.css";
 import { TextInput, Textarea, Select } from "react-materialize";
 import Dropzone from "../dropzone/Dropzone";

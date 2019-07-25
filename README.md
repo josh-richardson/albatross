@@ -16,6 +16,7 @@ A video demo is available here: https://www.youtube.com/watch?v=DXyY1X9m0Pc
 - [x] Uploading of Chrome/Firefox extensions
 - [x] Listing of Chrome/Firefox extensions
 - [x] Fully hosted on Arweave without any external dependencies
+
 ##### v0.2
 - [x] Various CSS fixes
 - [x] Fixed bug whereby a refresh on addon details page would cause an exception
@@ -29,3 +30,4 @@ A video demo is available here: https://www.youtube.com/watch?v=DXyY1X9m0Pc
 - App versioning: functionality has been written to support this, but is not currently usable
 - Integration with Firefox & Chrome store APIs (retrieve extension, retrieve 'external' reviews - this is very feasible for Firefox, they provide an extensive public API)
 - At some point, more effective management of how apps are stored & retrieved, as the current implementation will not scale well
+- User profiles with posted reviews/apps/etc
