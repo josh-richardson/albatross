@@ -1,7 +1,6 @@
 import { arweave } from "./constants";
 
 
-
 export const retrieveApps = (add) => {
   return new Promise((resolve, reject) => {
     arweave.arql({
@@ -9,7 +8,6 @@ export const retrieveApps = (add) => {
       expr1: "store",
       expr2: "albatross-v2-beta"
     }).then(queryResult => {
-
       let counter = queryResult.length;
       queryResult.forEach(tx => {
         arweave.transactions.get(tx).then(txResult => {
@@ -20,7 +18,6 @@ export const retrieveApps = (add) => {
           }
         });
       });
-
     });
   });
 };

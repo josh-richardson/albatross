@@ -41,3 +41,17 @@
     border-radius: 5px;
     margin-bottom: 10px;
 }
+
+.submit-review {
+    display: flex;
+}
+
+.submit-review > .input-field {
+    margin: 0;
+    flex-grow: 1;
+}
+
+.submit-review > .btn {
+    margin-top: 10px;
+    margin-left: 10px;
+}

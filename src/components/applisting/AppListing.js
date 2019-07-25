@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { arweave } from "../../constants";
 import "jdenticon";
 import "./AppListing.css";
 import AppBadge from "./appbadge/AppBadge";

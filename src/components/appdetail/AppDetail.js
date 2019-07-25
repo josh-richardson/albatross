@@ -44,7 +44,6 @@ class AppDetail extends React.Component {
       queryResult.forEach(tx => {
         arweave.transactions.get(tx).then(txResult => {
           const txObject = JSON.parse(txResult.get("data", { decode: true, string: true }));
-          console.log(txObject);
           window.location.href = txObject.package;
         });
       });
@@ -99,7 +98,7 @@ class AppDetail extends React.Component {
 
             </div>
             <div className="app-reviews">
-              <ReviewListing/>
+              <ReviewListing currentAppId={this.state.app.id}/>
             </div>
           </div>
 
