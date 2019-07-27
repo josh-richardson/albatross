@@ -23,7 +23,7 @@ A video demo is available here: https://www.youtube.com/watch?v=DXyY1X9m0Pc
 - [x] User reviews implemented
 - [ ] Update notification: a statusbar at the top of the app store to notify users of newer versions of the app store which have subsequently been deployed
 - [ ] Search & better filtering
-
+- [x] Added favicon
 
 #### Planned features:
 - Chunked uploads/downlads to circumvent the 2mb limit (or maybe wait until Arweave supports larger, although tests of chunks have worked well thus far)
