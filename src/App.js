@@ -23,6 +23,12 @@ class MainApp extends React.Component {
 
   componentWillMount() {
     document.title = "Albatross App Store";
+
+    const link = document.querySelector("link[rel*='icon']") || document.createElement("link");
+    link.type = "image/x-icon";
+    link.rel = "shortcut icon";
+    link.href = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAapJREFUWIXF1j9sTVEcB/CjaEIsgoi0klqQdBdC/OlQCYOlSRckWGxExCAxWISBGMRi6UQq0alTEwaTTjW2S7tYSJGIlJTnY7jnxenz5PVefed+1/vO7/fJ7953fzeEuoPddfbvCSFcwQscw/rsAmzBnCKLeIZRbMqJ6Me8lVnEHezMhRjAtL+zhEfYlQOxLo7/bRvIZ1zoOiLB7I23YDlB/MKBbIgIOYpGgpjKCoiIyZbbcTw3YLBlCm+yvzMw3jKF27kBe/A9AfzESHL9DF7iOXZ0C3G3ZQoNPMBY/Ic08wHXugHYiNk274g0EziMoTUHRMRwB8ChMvV6Khhed7i+uULN1QcjHSbwFee71bwXCx0AzUzh4FoDbqyyeZoZXPU/a12xJS9auZgotuZpxYP5RPEN8a8s41xVwNmk0EfcxP42v9ugWF4P8a4N4hO2lm3ei1exwHucKHH2CB7Hxs3cKwWIhYZxqvTBP+f34VsELKGvaq3Kwf1kCmN1ALbjSwQ0MFgH4nIyhafZARFxPQJ+oL8uxCXF98StWgARcRLjtQEiYlutgBBC+A0opjzP2yoiWQAAAABJRU5ErkJggg==";
+    document.getElementsByTagName("head")[0].appendChild(link);
   }
 
   render() {
