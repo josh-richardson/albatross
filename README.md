@@ -21,9 +21,9 @@ A video demo is available here: https://www.youtube.com/watch?v=DXyY1X9m0Pc
 - [x] Various CSS fixes
 - [x] Fixed bug whereby a refresh on addon details page would cause an exception
 - [x] User reviews implemented
-- [ ] Update notification: a statusbar at the top of the app store to notify users of newer versions of the app store which have subsequently been deployed
-- [ ] Search & better filtering
 - [x] Added favicon
+- [ ] Update notification: a statusbar at the top of the app store to notify users of newer versions of the app store which have subsequently been deployed
+
 
 #### Planned features:
 - Chunked uploads/downlads to circumvent the 2mb limit (or maybe wait until Arweave supports larger, although tests of chunks have worked well thus far)
@@ -31,3 +31,4 @@ A video demo is available here: https://www.youtube.com/watch?v=DXyY1X9m0Pc
 - Integration with Firefox & Chrome store APIs (retrieve extension, retrieve 'external' reviews - this is very feasible for Firefox, they provide an extensive public API)
 - At some point, more effective management of how apps are stored & retrieved, as the current implementation will not scale well
 - User profiles with posted reviews/apps/etc
+- Search & better filtering

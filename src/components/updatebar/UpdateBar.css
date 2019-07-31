@@ -1,0 +1,29 @@
+.update-bar {
+    width: 100%;
+    min-width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #aa0000;
+    border-color: black;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.update-bar a {
+    line-height: 40px;
+    color: blue;
+}
+
+.update-available {
+    margin: 0;
+    padding: 0;
+    line-height: 40px;
+    color: white;
+    font-size: 16px;
+}
+
+
+.update-available a {
+    color: blue;
+}
