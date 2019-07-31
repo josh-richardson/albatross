@@ -59,12 +59,11 @@
 
 .dv-star-rating {
     width: 140px;
-
     padding-top: 5px;
     padding-left: 5px;
-
+    flex-grow: 1;
 }
 
 .dv-star-rating > label {
-    font-size: 1.5rem !important;
+    font-size: 1.4rem !important;
 }

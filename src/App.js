@@ -14,6 +14,7 @@ import SetUser from "./components/setuser/SetUser";
 import Store from "./components/store/Store";
 import AppDetail from "./components/appdetail/AppDetail";
 import SubmitApp from "./components/submitapp/SubmitApp";
+import UpdateBar from "./components/updatebar/UpdateBar";
 
 function Index() {
   return <Redirect from="/" to="/store/firefox"/>;
@@ -35,6 +36,7 @@ class MainApp extends React.Component {
     return (
       <div className="page-container">
         <div className="content-wrapper">
+          <UpdateBar/>
           <NavBar/>
           <div className="section">
             <div className="container">

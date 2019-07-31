@@ -25,10 +25,10 @@ class ReviewListing extends React.Component {
 
   postReview() {
     arweave.createTransaction({
-      data: JSON.stringify({ review: this.state.currentReview, username: localStorage.getItem("albatross_username") })
+      data: JSON.stringify({ review: this.state.currentReview, rating: this.state.currentRating, username: localStorage.getItem("albatross_username") })
     }, this.props.wallet).then(tx => {
       tx.addTag("Content-Type", "application/json");
-      tx.addTag("albatross-review", this.props.currentAppId);
+      tx.addTag("albatross-review-beta-v3", this.props.currentAppId);
       arweave.transactions.sign(tx, this.props.wallet).then(() => {
         arweave.transactions.post(tx).then(response => {
           if (response.status === 200) {
@@ -54,7 +54,7 @@ class ReviewListing extends React.Component {
     // this.setState({ reviews: testReviews });
     arweave.arql({
       op: "equals",
-      expr1: "albatross-review",
+      expr1: "albatross-review-beta-v3",
       expr2: this.props.currentAppId
     }).then(queryResult => {
       queryResult.forEach(tx => {
@@ -64,7 +64,7 @@ class ReviewListing extends React.Component {
             this.setState({
               reviews: [...this.state.reviews, {
                 for: this.props.currentAppId,
-                rating: 1,
+                rating: reviewBody.rating,
                 review: reviewBody.review,
                 addr: resultAddress,
                 username: reviewBody.username
@@ -84,6 +84,10 @@ class ReviewListing extends React.Component {
             <div className="review-header">
               <svg width="36" height="36" data-jdenticon-value={app.addr}/>
               <p>{app.username}</p>
+              <StarRatingComponent
+                starCount={5}
+                value={app.rating}
+              />
             </div>
             <p className="clamped-para" onClick={(evt) => {
               evt.currentTarget.classList.remove("clamped-para");
