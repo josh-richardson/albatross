@@ -1,4 +1,5 @@
 import Arweave from "arweave/web";
+export const VERSION = 2;
 
 export const arweave = Arweave.init({
   host:
@@ -9,7 +10,7 @@ export const arweave = Arweave.init({
   protocol: "https"
 });
 
-export const DEBUG = true;
+export const DEBUG = false;
 
 export const testApps = [
   {

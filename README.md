@@ -6,6 +6,7 @@ A decentralized app store. Written in React, and built to run on the Arweave per
 
 Version 0.1 is deployed here: https://arweave.net/lwmZivelMcNjt6gRiESSgsIAl8WpFpq679c_Pt7L900
 
+
 A convenient (centralized) redirect is available here: https://albatross.link
 
 A video demo is available here: https://www.youtube.com/watch?v=DXyY1X9m0Pc
@@ -22,7 +23,7 @@ A video demo is available here: https://www.youtube.com/watch?v=DXyY1X9m0Pc
 - [x] Fixed bug whereby a refresh on addon details page would cause an exception
 - [x] User reviews implemented
 - [x] Added favicon
-- [ ] Update notification: a statusbar at the top of the app store to notify users of newer versions of the app store which have subsequently been deployed
+- [x] Update notification: a statusbar at the top of the app store to notify users of newer versions of the app store which have subsequently been deployed
 
 
 #### Planned features:

@@ -2,6 +2,7 @@ import React from "react";
 import "./Footer.css";
 import ArweaveIcon from "./ArweaveIcon";
 import GithubIcon from "./GithubIcon";
+import { VERSION } from "../../constants";
 
 const Footer = () => {
   return (
@@ -10,7 +11,7 @@ const Footer = () => {
       <div className="container">
         <hr/>
         <div className="left">
-          <p>Albatross Version: 0.1</p>
+          <p>Albatross Version: 0.{VERSION}</p>
         </div>
 
         <div className="right">
