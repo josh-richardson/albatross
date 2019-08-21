@@ -6,6 +6,8 @@ A decentralized app store. Written in React, and built to run on the Arweave per
 
 Version 0.1 is deployed here: https://arweave.net/lwmZivelMcNjt6gRiESSgsIAl8WpFpq679c_Pt7L900
 
+Version 0.2 is deployed here: https://arweave.net/Jwa_gxrwhlsQ6UUPyy0MGX7qgKaLz4D3bNMFGmFAFN4
+
 
 A convenient (centralized) redirect is available here: https://albatross.link
 
