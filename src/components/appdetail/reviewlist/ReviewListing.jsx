@@ -54,7 +54,7 @@ class ReviewListing extends React.Component {
     // this.setState({ reviews: testReviews });
     arweave.arql({
       op: "equals",
-      expr1: "albatross-review-beta-v3",
+      expr1: "albatross-review-v1",
       expr2: this.props.currentAppId
     }).then(queryResult => {
       queryResult.forEach(tx => {

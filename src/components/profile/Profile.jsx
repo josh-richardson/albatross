@@ -52,11 +52,10 @@ class Profile extends React.Component {
         <button className="blue waves-effect waves-light btn" onClick={() => {
           this.props.history.push("/submit/");
         }}>Submit an App</button>
-        <button className="blue waves-effect waves-light btn">Update an App</button>
 
         <h4>Submitted Apps:</h4>
 
-        <AppListing address={this.props.address} />
+        <AppListing address={this.props.address} showUpdate={true} />
 
       </div>
     );
