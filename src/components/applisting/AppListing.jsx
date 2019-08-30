@@ -29,11 +29,12 @@ class AppListing extends React.Component {
     } else if (this.props.address) {
       relevantApps = relevantApps.filter(app => app.authorAddr.toLowerCase() === this.props.address.toLowerCase());
     }
+
     return (
       <div className="app-listing">
 
         {relevantApps && relevantApps.map(app => {
-          return <AppBadge key={app.id} app={app}/>;
+          return <AppBadge key={app.id} app={app} showUpdate={this.props.showUpdate}/>;
         })}
       </div>
     );
