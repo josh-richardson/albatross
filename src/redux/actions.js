@@ -9,7 +9,7 @@ export const logIn = (wallet, pubKey, balance) => ({
   }
 });
 
-export const addApp = (app) => ({
+export const addApp = app => ({
   type: ADD_APP,
   payload: {
     app: app
@@ -19,7 +19,6 @@ export const addApp = (app) => ({
 export const resetApps = () => ({
   type: RESET_APPS
 });
-
 
 export const logOut = () => ({
   type: LOG_OUT

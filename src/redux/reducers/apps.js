@@ -14,7 +14,7 @@ export default function(state = initialState, action) {
       };
     }
     case RESET_APPS: {
-      return initialState
+      return initialState;
     }
     default:
       return state;

@@ -7,12 +7,9 @@ import { addApp } from "../../redux/actions";
 import { retrieveApps } from "../../utils";
 
 class AppListing extends React.Component {
-
-
   constructor(props) {
     super(props);
     this.state = { loading: true };
-
   }
 
   componentDidMount() {
@@ -25,17 +22,27 @@ class AppListing extends React.Component {
     let relevantApps = this.props.apps;
 
     if (this.props.platform) {
-      relevantApps = relevantApps.filter(app => app.platform.toLowerCase() === this.props.platform.toLowerCase());
+      relevantApps = relevantApps.filter(
+        app => app.platform.toLowerCase() === this.props.platform.toLowerCase()
+      );
     } else if (this.props.address) {
-      relevantApps = relevantApps.filter(app => app.authorAddr.toLowerCase() === this.props.address.toLowerCase());
+      relevantApps = relevantApps.filter(
+        app => app.authorAddr.toLowerCase() === this.props.address.toLowerCase()
+      );
     }
 
     return (
       <div className="app-listing">
-
-        {relevantApps && relevantApps.map(app => {
-          return <AppBadge key={app.id} app={app} showUpdate={this.props.showUpdate}/>;
-        })}
+        {relevantApps &&
+          relevantApps.map(app => {
+            return (
+              <AppBadge
+                key={app.id}
+                app={app}
+                showUpdate={this.props.showUpdate}
+              />
+            );
+          })}
       </div>
     );
   }

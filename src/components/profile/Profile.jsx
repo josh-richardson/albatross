@@ -7,7 +7,6 @@ import "./Profile.css";
 import AppListing from "../applisting/AppListing";
 
 class Profile extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = { username: "unset", loading: true };
@@ -26,9 +25,9 @@ class Profile extends React.Component {
   retrieveProfile() {
     const username = localStorage.getItem("albatross_username");
     if (username) {
-      this.setState({username: username})
+      this.setState({ username: username });
     } else {
-      this.props.history.push("/setuser/")
+      this.props.history.push("/setuser/");
     }
   }
 
@@ -36,27 +35,42 @@ class Profile extends React.Component {
     return (
       <div>
         <div className="profile-header">
-          <svg width="80" height="80" data-jdenticon-value={this.props.address}/>
+          <svg
+            width="80"
+            height="80"
+            data-jdenticon-value={this.props.address}
+          />
           <div className="profile-extra">
             <h4>{this.state.username}</h4>
             <p>Address: {this.props.address}</p>
-            <p>Balance: {arweave.ar.winstonToAr(this.props.balance, { decimals: 2 })} AR</p>
+            <p>
+              Balance:{" "}
+              {arweave.ar.winstonToAr(this.props.balance, { decimals: 2 })} AR
+            </p>
           </div>
         </div>
 
-        <button className="blue waves-effect waves-light btn" onClick={() => {
-          this.props.logOut();
-          this.props.history.push("/store/firefox");
-        }}>Log Out
+        <button
+          className="blue waves-effect waves-light btn"
+          onClick={() => {
+            this.props.logOut();
+            this.props.history.push("/store/firefox");
+          }}
+        >
+          Log Out
         </button>
-        <button className="blue waves-effect waves-light btn" onClick={() => {
-          this.props.history.push("/submit/");
-        }}>Submit an App</button>
+        <button
+          className="blue waves-effect waves-light btn"
+          onClick={() => {
+            this.props.history.push("/submit/");
+          }}
+        >
+          Submit an App
+        </button>
 
         <h4>Submitted Apps:</h4>
 
         <AppListing address={this.props.address} showUpdate={true} />
-
       </div>
     );
   }

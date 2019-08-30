@@ -10,15 +10,18 @@ import Materialize from "materialize-css";
 import { BounceLoader } from "react-spinners";
 
 class SubmitApp extends React.Component {
-
   constructor(props) {
     super(props);
-    this.state = { username: "unset", deploying: false, platform: 'firefox', category: 'accessibility' };
+    this.state = {
+      username: "unset",
+      deploying: false,
+      platform: "firefox",
+      category: "accessibility"
+    };
     this.submitApp = this.submitApp.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFileUpload = this.handleFileUpload.bind(this);
     this.retrieveProfile = this.retrieveProfile.bind(this);
-
   }
 
   componentDidMount() {
@@ -31,14 +34,13 @@ class SubmitApp extends React.Component {
   uuidv4() {
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
       // eslint-disable-next-line no-mixed-operators
-      var r = Math.random() * 16 | 0, v = c === "x" ? r : (r & 0x3 | 0x8);
+      var r = (Math.random() * 16) | 0,
+        v = c === "x" ? r : (r & 0x3) | 0x8;
       return v.toString(16);
     });
   }
 
   submitApp() {
-
-
     let appRepr = Object.assign(this.state, {
       authorAddr: this.props.address,
       author: this.state.username,
@@ -57,53 +59,63 @@ class SubmitApp extends React.Component {
     delete appRepr.deploying;
 
     this.setState({ deploying: true });
-    arweave.createTransaction({
-      data: JSON.stringify(appRepr)
-    }, this.props.wallet).then(tx => {
-      tx.addTag("Content-Type", "application/json");
-      tx.addTag("store", "albatross-v2-beta");
+    arweave
+      .createTransaction(
+        {
+          data: JSON.stringify(appRepr)
+        },
+        this.props.wallet
+      )
+      .then(tx => {
+        tx.addTag("Content-Type", "application/json");
+        tx.addTag("store", "albatross-v2-beta");
 
-      arweave.transactions.sign(tx, this.props.wallet).then(() => {
-        arweave.transactions.post(tx).then(response => {
-          if (response.status === 200) {
-            let checkInterval = setInterval(() => {
-              arweave.transactions.getStatus(tx.id).then(response => {
-                if (response.status === 200) {
-                  let packageTx = JSON.stringify({ "package": mPkg });
-                  arweave.createTransaction({
-                    data: packageTx
-                  }, this.props.wallet).then(pTx => {
-                    pTx.addTag("packageId", appRepr.id);
-                    arweave.transactions.sign(pTx, this.props.wallet).then(() => {
-                      arweave.transactions.post(pTx).then(pResponse => {
-                        clearInterval(checkInterval);
-                        if (pResponse.status === 200) {
-                          this.props.resetApps();
-                          Materialize.toast({
-                            html: "App successfully uploaded to Arweave!"
+        arweave.transactions.sign(tx, this.props.wallet).then(() => {
+          arweave.transactions.post(tx).then(response => {
+            if (response.status === 200) {
+              let checkInterval = setInterval(() => {
+                arweave.transactions.getStatus(tx.id).then(response => {
+                  if (response.status === 200) {
+                    let packageTx = JSON.stringify({ package: mPkg });
+                    arweave
+                      .createTransaction(
+                        {
+                          data: packageTx
+                        },
+                        this.props.wallet
+                      )
+                      .then(pTx => {
+                        pTx.addTag("packageId", appRepr.id);
+                        arweave.transactions
+                          .sign(pTx, this.props.wallet)
+                          .then(() => {
+                            arweave.transactions.post(pTx).then(pResponse => {
+                              clearInterval(checkInterval);
+                              if (pResponse.status === 200) {
+                                this.props.resetApps();
+                                Materialize.toast({
+                                  html: "App successfully uploaded to Arweave!"
+                                });
+                                this.props.history.push("/store/firefox");
+                              }
+                            });
                           });
-                          this.props.history.push("/store/firefox");
-                        }
                       });
+                  } else if (response.status === 202) {
+                    Materialize.toast({
+                      html: "App is deploying. Progress is being made!"
                     });
-                  });
-                } else if (response.status === 202) {
-                  Materialize.toast({
-                    html: "App is deploying. Progress is being made!"
-                  });
-                } else {
-                  Materialize.toast({
-                    html: "Something went wrong!"
-                  });
-                }
-              });
-            }, 15000);
-          }
+                  } else {
+                    Materialize.toast({
+                      html: "Something went wrong!"
+                    });
+                  }
+                });
+              }, 15000);
+            }
+          });
         });
       });
-    });
-
-
   }
 
   handleChange(event) {
@@ -130,68 +142,92 @@ class SubmitApp extends React.Component {
   render() {
     return (
       <div>
-
-        {this.state.deploying ? <div>
-          <div className="loader">
-            <BounceLoader
-              sizeUnit={"px"}
-              size={150}
-              color={"#123abc"}
-            />
+        {this.state.deploying ? (
+          <div>
+            <div className="loader">
+              <BounceLoader sizeUnit={"px"} size={150} color={"#123abc"} />
+            </div>
+            <p className="center">
+              Currently uploading your app... this may take up to 10 minutes.
+            </p>
           </div>
-          <p className="center">Currently uploading your app... this may take up to 10 minutes.</p>
-        </div> : <div>
-          <h1>Submit an App!</h1>
-          <TextInput label="App Name" onChange={this.handleChange} name="name"/>
-          <TextInput label="App Tagline" onChange={this.handleChange} name="tagline"/>
+        ) : (
+          <div>
+            <h1>Submit an App!</h1>
+            <TextInput
+              label="App Name"
+              onChange={this.handleChange}
+              name="name"
+            />
+            <TextInput
+              label="App Tagline"
+              onChange={this.handleChange}
+              name="tagline"
+            />
 
-          <p>App Category:</p>
-          <Select onChange={this.handleChange} name="category">
-            {appTypes.map(appType => {
-              return (<option key={appType} value={appType.toLowerCase()}>
-                {capitalize(appType)}
-              </option>);
-            })}
-          </Select>
+            <p>App Category:</p>
+            <Select onChange={this.handleChange} name="category">
+              {appTypes.map(appType => {
+                return (
+                  <option key={appType} value={appType.toLowerCase()}>
+                    {capitalize(appType)}
+                  </option>
+                );
+              })}
+            </Select>
 
-          <TextInput label="App Detail Images (space-separated URLs)" onChange={this.handleChange} name="detailImages"/>
-          <p>App Icon:</p>
-          <Dropzone onSelected={(files) => {
-            this.handleFileUpload(files, "icon");
-          }} filename="icon"/>
+            <TextInput
+              label="App Detail Images (space-separated URLs)"
+              onChange={this.handleChange}
+              name="detailImages"
+            />
+            <p>App Icon:</p>
+            <Dropzone
+              onSelected={files => {
+                this.handleFileUpload(files, "icon");
+              }}
+              filename="icon"
+            />
 
-          <p>App Small Image:</p>
-          <Dropzone onSelected={(files) => {
-            this.handleFileUpload(files, "image");
-          }} filename="small image"/>
+            <p>App Small Image:</p>
+            <Dropzone
+              onSelected={files => {
+                this.handleFileUpload(files, "image");
+              }}
+              filename="small image"
+            />
 
-          <p>App platform:</p>
-          <Select onChange={this.handleChange} name="platform">
+            <p>App platform:</p>
+            <Select onChange={this.handleChange} name="platform">
+              <option value="firefox">Firefox</option>
+              <option value="chrome">Chrome</option>
+              <option value="android">Android</option>
+            </Select>
 
-            <option value="firefox">
-              Firefox
-            </option>
-            <option value="chrome">
-              Chrome
-            </option>
-            <option value="android">
-              Android
-            </option>
-          </Select>
+            <Textarea
+              label="App Description (multiline)"
+              onChange={this.handleChange}
+              name="description"
+            />
 
-          <Textarea label="App Description (multiline)" onChange={this.handleChange} name="description"/>
+            <p>App file (under 2mb):</p>
+            <Dropzone
+              onSelected={files => {
+                this.handleFileUpload(files, "package");
+              }}
+              filename="app"
+            />
 
-          <p>App file (under 2mb):</p>
-          <Dropzone onSelected={(files) => {
-            this.handleFileUpload(files, "package");
-          }} filename="app"/>
-
-          <button className="blue waves-effect waves-light btn submit-app-button" onClick={() => {
-            this.submitApp();
-          }}>Submit App
-          </button>
-        </div>}
-
+            <button
+              className="blue waves-effect waves-light btn submit-app-button"
+              onClick={() => {
+                this.submitApp();
+              }}
+            >
+              Submit App
+            </button>
+          </div>
+        )}
       </div>
     );
   }
