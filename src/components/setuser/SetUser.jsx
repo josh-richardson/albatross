@@ -7,8 +7,6 @@ import "./SetUser.css";
 import { TextInput } from "react-materialize";
 
 class SetUser extends React.Component {
-
-
   constructor(props) {
     super(props);
     this.state = { username: undefined };
@@ -16,9 +14,7 @@ class SetUser extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.updateUsername = this.updateUsername.bind(this);
-
   }
-
 
   componentDidMount() {
     if (!this.props.isLoggedIn) {
@@ -34,7 +30,6 @@ class SetUser extends React.Component {
     }
   }
 
-
   handleChange(event) {
     this.setState({ username: event.target.value });
   }
@@ -48,9 +43,13 @@ class SetUser extends React.Component {
     return (
       <div>
         <p>You haven't yet set a username! Please set one below:</p>
-        <TextInput onChange={this.handleChange}/>
+        <TextInput onChange={this.handleChange} />
         <div className="right">
-          <button className="blue waves-effect waves-light btn" onClick={this.updateUsername}>Set
+          <button
+            className="blue waves-effect waves-light btn"
+            onClick={this.updateUsername}
+          >
+            Set
           </button>
         </div>
       </div>

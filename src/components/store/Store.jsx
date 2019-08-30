@@ -7,8 +7,6 @@ import AppListing from "../applisting/AppListing";
 import { capitalize } from "../../constants";
 
 class Store extends React.Component {
-
-
   constructor(props) {
     super(props);
     this.state = { loading: true };
@@ -18,7 +16,7 @@ class Store extends React.Component {
     return (
       <div>
         <h2>Apps for {capitalize(this.props.match.params.platform)}</h2>
-        <AppListing platform={this.props.match.params.platform}/>
+        <AppListing platform={this.props.match.params.platform} />
       </div>
     );
   }
