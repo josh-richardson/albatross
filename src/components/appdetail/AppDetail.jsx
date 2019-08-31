@@ -9,31 +9,29 @@ import { addApp } from "../../redux/actions";
 import { arweave } from "../../constants";
 import Materialize from "materialize-css";
 import ReviewListing from "./reviewlist/ReviewListing";
-import { retrieveApps } from "../../utils";
 
 class AppDetail extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { app: null, loading: true };
+    this.state = { app: null };
+  }
+
+  updateCurrentApp(props) {
+    props = props || this.props;
+    if (!props.apps.loading) {
+      this.setState({
+        app: props.apps.entries.filter(x => x.id === props.match.params.uuid)[0]
+      });
+    }
   }
 
   componentDidMount() {
-    if (this.props.apps.length !== 0) {
-      this.setState({
-        app: this.props.apps.filter(
-          x => x.id === this.props.match.params.uuid
-        )[0],
-        loading: false
-      });
-    } else {
-      retrieveApps(this.props.addApp).then(() => {
-        this.setState({
-          app: this.props.apps.filter(
-            x => x.id === this.props.match.params.uuid
-          )[0],
-          loading: false
-        });
-      });
+    this.updateCurrentApp();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.apps.loading && !this.props.app) {
+      this.updateCurrentApp(nextProps);
     }
   }
 
@@ -65,7 +63,7 @@ class AppDetail extends React.Component {
   render() {
     return (
       <div>
-        {this.state.loading ? (
+        {this.props.apps.loading || !this.state.app ? (
           <div className="loader">
             <BounceLoader sizeUnit={"px"} size={150} color={"#123abc"} />
           </div>
@@ -149,7 +147,7 @@ class AppDetail extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.apps;
+  return state;
 };
 
 export default connect(

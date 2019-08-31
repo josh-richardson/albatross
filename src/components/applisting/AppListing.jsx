@@ -4,22 +4,10 @@ import "jdenticon";
 import "./AppListing.css";
 import AppBadge from "./appbadge/AppBadge";
 import { addApp } from "../../redux/actions";
-import { retrieveApps } from "../../utils";
 
 class AppListing extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { loading: true };
-  }
-
-  componentDidMount() {
-    if (this.props.apps.length === 0) {
-      retrieveApps(this.props.addApp);
-    }
-  }
-
   render() {
-    let relevantApps = this.props.apps;
+    let relevantApps = this.props.apps.entries;
 
     if (this.props.platform) {
       relevantApps = relevantApps.filter(
@@ -49,7 +37,7 @@ class AppListing extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.apps;
+  return state;
 };
 
 export default connect(

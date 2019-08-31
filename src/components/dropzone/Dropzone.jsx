@@ -3,10 +3,13 @@ import { useDropzone } from "react-dropzone";
 import "./Dropzone.css";
 
 const Dropzone = props => {
-  const onDrop = useCallback(acceptedFiles => {
-    setText("Selected: " + acceptedFiles.map(x => x.name).join(", "));
-    props.onSelected(acceptedFiles);
-  }, []);
+  const onDrop = useCallback(
+    acceptedFiles => {
+      setText("Selected: " + acceptedFiles.map(x => x.name).join(", "));
+      props.onSelected(acceptedFiles);
+    },
+    [props]
+  );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   const [promptText, setText] = useState(
     "Drag 'n' drop your " + props.filename + " here, or click to select..."

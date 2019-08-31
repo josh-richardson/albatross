@@ -1,4 +1,10 @@
-import { ADD_APP, LOG_IN, LOG_OUT, RESET_APPS } from "./actionTypes";
+import {
+  ADD_APP,
+  FINISH_LOADING,
+  LOG_IN,
+  LOG_OUT,
+  RESET_APPS
+} from "./actionTypes";
 
 export const logIn = (wallet, pubKey, balance) => ({
   type: LOG_IN,
@@ -14,6 +20,10 @@ export const addApp = app => ({
   payload: {
     app: app
   }
+});
+
+export const finishLoading = () => ({
+  type: FINISH_LOADING
 });
 
 export const resetApps = () => ({

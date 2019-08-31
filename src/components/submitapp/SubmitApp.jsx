@@ -18,6 +18,11 @@ class SubmitApp extends React.Component {
       platform: "firefox",
       category: "accessibility"
     };
+
+    if (this.props.match.params.uuid) {
+      this.state = { ...this.state, updating: true, appToUpdate: null };
+    }
+
     this.submitApp = this.submitApp.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFileUpload = this.handleFileUpload.bind(this);
@@ -69,53 +74,54 @@ class SubmitApp extends React.Component {
       .then(tx => {
         tx.addTag("Content-Type", "application/json");
         tx.addTag("store", "albatross-v2-beta");
-
         arweave.transactions.sign(tx, this.props.wallet).then(() => {
           arweave.transactions.post(tx).then(response => {
             if (response.status === 200) {
-              let checkInterval = setInterval(() => {
-                arweave.transactions.getStatus(tx.id).then(response => {
-                  if (response.status === 200) {
-                    let packageTx = JSON.stringify({ package: mPkg });
-                    arweave
-                      .createTransaction(
-                        {
-                          data: packageTx
-                        },
-                        this.props.wallet
-                      )
-                      .then(pTx => {
-                        pTx.addTag("packageId", appRepr.id);
-                        arweave.transactions
-                          .sign(pTx, this.props.wallet)
-                          .then(() => {
-                            arweave.transactions.post(pTx).then(pResponse => {
-                              clearInterval(checkInterval);
-                              if (pResponse.status === 200) {
-                                this.props.resetApps();
-                                Materialize.toast({
-                                  html: "App successfully uploaded to Arweave!"
-                                });
-                                this.props.history.push("/store/firefox");
-                              }
-                            });
-                          });
-                      });
-                  } else if (response.status === 202) {
-                    Materialize.toast({
-                      html: "App is deploying. Progress is being made!"
-                    });
-                  } else {
-                    Materialize.toast({
-                      html: "Something went wrong!"
-                    });
-                  }
-                });
-              }, 15000);
+              this.checkForTransactionProgress(tx, mPkg, appRepr);
             }
           });
         });
       });
+  }
+
+  checkForTransactionProgress(tx, mPkg, appRepr) {
+    let checkInterval = setInterval(() => {
+      arweave.transactions.getStatus(tx.id).then(response => {
+        if (response.status === 200) {
+          let packageTx = JSON.stringify({ package: mPkg });
+          arweave
+            .createTransaction(
+              {
+                data: packageTx
+              },
+              this.props.wallet
+            )
+            .then(pTx => {
+              pTx.addTag("packageId", appRepr.id);
+              arweave.transactions.sign(pTx, this.props.wallet).then(() => {
+                arweave.transactions.post(pTx).then(pResponse => {
+                  clearInterval(checkInterval);
+                  if (pResponse.status === 200) {
+                    this.props.resetApps();
+                    Materialize.toast({
+                      html: "App successfully uploaded to Arweave!"
+                    });
+                    this.props.history.push("/store/firefox");
+                  }
+                });
+              });
+            });
+        } else if (response.status === 202) {
+          Materialize.toast({
+            html: "App is deploying. Progress is being made!"
+          });
+        } else {
+          Materialize.toast({
+            html: "Something went wrong!"
+          });
+        }
+      });
+    }, 15000);
   }
 
   handleChange(event) {

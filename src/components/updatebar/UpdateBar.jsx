@@ -61,7 +61,7 @@ class NavBar extends React.Component {
               onClick={() => {
                 this.setState({ visible: false });
               }}
-              href="#"
+              href="#/"
             >
               Close
             </a>

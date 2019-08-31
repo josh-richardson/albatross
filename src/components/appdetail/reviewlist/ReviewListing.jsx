@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { arweave, testReviews } from "../../../constants";
+import { arweave } from "../../../constants";
 import "jdenticon";
 import "./ReviewListing.css";
 import "jdenticon";
