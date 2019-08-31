@@ -1,15 +1,15 @@
-import React from "react";
-import { connect } from "react-redux";
-import "jdenticon";
-import { logOut } from "../../redux/actions";
-import "./Store.css";
-import AppListing from "../applisting/AppListing";
-import { capitalize } from "../../constants";
+import React from 'react'
+import { connect } from 'react-redux'
+import 'jdenticon'
+import { logOut } from '../../redux/actions'
+import './Store.css'
+import AppListing from '../applisting/AppListing'
+import { capitalize } from '../../constants'
 
 class Store extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = { loading: true };
+    super(props)
+    this.state = { loading: true }
   }
 
   render() {
@@ -18,15 +18,15 @@ class Store extends React.Component {
         <h2>Apps for {capitalize(this.props.match.params.platform)}</h2>
         <AppListing platform={this.props.match.params.platform} />
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => {
-  return state.user;
-};
+  return state.user
+}
 
 export default connect(
   mapStateToProps,
   { logOut }
-)(Store);
+)(Store)

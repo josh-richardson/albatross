@@ -1,8 +1,8 @@
-import React from "react";
-import "./Footer.css";
-import ArweaveIcon from "./ArweaveIcon";
-import GithubIcon from "./GithubIcon";
-import { VERSION } from "../../constants";
+import React from 'react'
+import './Footer.css'
+import ArweaveIcon from './ArweaveIcon'
+import GithubIcon from './GithubIcon'
+import { VERSION } from '../../constants'
 
 const Footer = () => {
   return (
@@ -23,6 +23,6 @@ const Footer = () => {
         </div>
       </div>
     </div>
-  );
-};
-export default Footer;
+  )
+}
+export default Footer
