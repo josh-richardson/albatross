@@ -1,28 +1,28 @@
-import { LOG_IN, LOG_OUT } from "../actionTypes";
+import { LOG_IN, LOG_OUT } from '../actionTypes'
 
 const initialState = {
   wallet: {},
   isLoggedIn: false,
   balance: 0,
-  address: ""
-};
+  address: '',
+}
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case LOG_IN: {
-      const { wallet, address, balance } = action.payload;
+      const { wallet, address, balance } = action.payload
       return {
         ...state,
         wallet: wallet,
         balance: balance,
         address: address,
-        isLoggedIn: true
-      };
+        isLoggedIn: true,
+      }
     }
     case LOG_OUT: {
-      return initialState;
+      return initialState
     }
     default:
-      return state;
+      return state
   }
 }

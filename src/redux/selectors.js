@@ -1,1 +1,1 @@
-export const getWallet = store => store.wallet;
+export const getWallet = store => store.wallet
