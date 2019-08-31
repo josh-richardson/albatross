@@ -14,11 +14,9 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     if (!this.props.isLoggedIn) {
       this.props.history.push("/login/");
     }
-
     this.retrieveProfile();
   }
 

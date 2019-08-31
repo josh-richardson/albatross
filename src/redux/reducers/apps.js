@@ -1,7 +1,8 @@
-import { ADD_APP, RESET_APPS } from "../actionTypes";
+import { ADD_APP, FINISH_LOADING, RESET_APPS } from "../actionTypes";
 
 const initialState = {
-  apps: []
+  entries: [],
+  loading: true
 };
 
 export default function(state = initialState, action) {
@@ -10,11 +11,17 @@ export default function(state = initialState, action) {
       const { app } = action.payload;
       return {
         ...state,
-        apps: [...state.apps, app]
+        entries: [...state.entries, app]
       };
     }
     case RESET_APPS: {
       return initialState;
+    }
+    case FINISH_LOADING: {
+      return {
+        ...state,
+        loading: false
+      };
     }
     default:
       return state;

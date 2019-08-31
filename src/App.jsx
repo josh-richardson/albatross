@@ -14,6 +14,9 @@ import Store from "./components/store/Store";
 import AppDetail from "./components/appdetail/AppDetail";
 import SubmitApp from "./components/submitapp/SubmitApp";
 import UpdateBar from "./components/updatebar/UpdateBar";
+import { connect } from "react-redux";
+import { addApp, finishLoading } from "./redux/actions";
+import { retrieveApps } from "./utils";
 
 function Index() {
   return <Redirect from="/" to="/store/firefox" />;
@@ -33,6 +36,10 @@ class MainApp extends React.Component {
     document.getElementsByTagName("head")[0].appendChild(link);
   }
 
+  componentDidMount() {
+    retrieveApps(this.props.addApp).then(this.props.finishLoading());
+  }
+
   render() {
     return (
       <div className="page-container">
@@ -47,7 +54,7 @@ class MainApp extends React.Component {
               <Route path="/setuser/" component={SetUser} />
               <Route path="/store/:platform" component={Store} />
               <Route path="/details/:uuid" component={AppDetail} />
-              <Route path="/submit/" component={SubmitApp} />
+              <Route path="/submit/:uuid?" component={SubmitApp} />
             </div>
           </div>
         </div>
@@ -57,4 +64,11 @@ class MainApp extends React.Component {
   }
 }
 
-export default MainApp;
+const mapStateToProps = state => {
+  return state.apps;
+};
+
+export default connect(
+  mapStateToProps,
+  { addApp, finishLoading }
+)(MainApp);
