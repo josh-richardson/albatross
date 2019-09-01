@@ -35,7 +35,7 @@ class MainApp extends React.Component {
   }
 
   componentDidMount() {
-    retrieveApps(this.props.addApp).then(this.props.finishLoading())
+    retrieveApps(this.props.addApp).then(() => this.props.finishLoading())
   }
 
   render() {

@@ -13,16 +13,7 @@ import ReviewListing from './reviewlist/ReviewListing'
 class AppDetail extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { app: null }
-  }
-
-  updateCurrentApp(props) {
-    props = props || this.props
-    if (!props.apps.loading) {
-      this.setState({
-        app: props.apps.entries.filter(x => x.id === props.match.params.uuid)[0],
-      })
-    }
+    this.state = { app: null, updates: [] }
   }
 
   componentDidMount() {
@@ -35,12 +26,58 @@ class AppDetail extends React.Component {
     }
   }
 
+  updateCurrentApp(props) {
+    props = props || this.props
+    if (props.apps.loading === false) {
+      this.setState(
+        {
+          app: props.apps.entries.filter(x => x.id === props.match.params.uuid)[0],
+        },
+        () => {
+          arweave
+            .arql({
+              op: 'and',
+              expr1: {
+                op: 'equals',
+                expr1: 'albatross-update-dev',
+                expr2: this.state.app.id,
+              },
+              expr2: {
+                op: 'equals',
+                expr1: 'from',
+                expr2: this.state.app.authorAddr,
+              },
+            })
+            .then(result => this.handleAppUpdateVersions(result))
+        }
+      )
+    }
+  }
+
+  handleAppUpdateVersions(versionTransactions) {
+    versionTransactions.forEach(tx => {
+      arweave.transactions.get(tx).then(txResult => {
+        const updateDetails = JSON.parse(txResult.get('data', { decode: true, string: true }))
+        this.setState({ updates: [...this.state.updates, updateDetails] })
+      })
+    })
+  }
+
   installApp() {
+    //albatross-update-dev
     arweave
       .arql({
-        op: 'equals',
-        expr1: 'packageId',
-        expr2: this.state.app.id,
+        op: 'and',
+        expr1: {
+          op: 'equals',
+          expr1: 'packageId',
+          expr2: this.state.app.id,
+        },
+        expr2: {
+          op: 'equals',
+          expr1: 'from',
+          expr2: this.state.app.authorAddr,
+        },
       })
       .then(queryResult => {
         if (queryResult.length === 0) {
@@ -48,7 +85,9 @@ class AppDetail extends React.Component {
         }
         queryResult.forEach(tx => {
           arweave.transactions.get(tx).then(txResult => {
-            window.location.href = JSON.parse(txResult.get('data', { decode: true, string: true })).package
+            console.log(txResult)
+
+            // window.location.href = JSON.parse(txResult.get('data', { decode: true, string: true })).package
           })
         })
       })
@@ -92,8 +131,15 @@ class AppDetail extends React.Component {
             <div className="details-review-split">
               <div className="app-details">
                 <p className="app-description">{this.state.app.description}</p>
+
+                {this.state.updates.length !== 0 && <h5>Changelog:</h5>}
+
+                {this.state.updates.map(item => (
+                  <p className="app-description">{item.changelog}</p>
+                ))}
+
                 <h5>Additional Details:</h5>
-                <p>Version: {this.state.app.version}</p>
+                <p>Version: {1 + this.state.updates.length}</p>
                 {this.state.app.fromStore ? (
                   <p>
                     From store:{' '}
