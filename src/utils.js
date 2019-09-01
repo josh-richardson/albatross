@@ -31,3 +31,8 @@ export const uuidv4 = () => {
     return v.toString(16)
   })
 }
+
+export const capitalize = s => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}

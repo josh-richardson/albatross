@@ -4,7 +4,7 @@ import 'jdenticon'
 import { logOut } from '../../redux/actions'
 import './Store.css'
 import AppListing from '../applisting/AppListing'
-import { capitalize } from '../../constants'
+import { capitalize } from '../../utils'
 
 class Store extends React.Component {
   constructor(props) {

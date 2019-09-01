@@ -5,10 +5,11 @@ import { resetApps } from '../../redux/actions'
 import './SubmitApp.css'
 import { TextInput, Textarea, Select } from 'react-materialize'
 import Dropzone from '../dropzone/Dropzone'
-import { arweave, appTypes, capitalize } from '../../constants'
+import { arweave, appTypes } from '../../constants'
+
 import Materialize from 'materialize-css'
 import { BounceLoader } from 'react-spinners'
-import { uuidv4 } from '../../utils'
+import { capitalize, uuidv4 } from '../../utils'
 
 class SubmitApp extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class SubmitApp extends React.Component {
         ...this.state,
         updating: true,
         complexUpdating: false,
-        appToUpdate: null,
+        appToUpdate: this.props.apps.entries.filter(a => a.id === this.props.match.params.uuid)[0],
       }
     }
 
@@ -36,26 +37,31 @@ class SubmitApp extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.props.isLoggedIn) {
+    if (!this.props.user.isLoggedIn) {
       this.props.history.push('/login/')
     }
     this.retrieveProfile()
   }
 
   submitApp() {
-    let appProperties = Object.assign(this.state, {
-      authorAddr: this.props.address,
-      author: this.state.username,
-      updated: new Date(),
-      version: 1,
-      detailImages: this.state.detailImages.split(' '),
-      fromStore: false,
-      storeUrl: null,
-      id: uuidv4(),
-      debug: true,
-    })
+    let appProperties = this.state.updating
+      ? {
+          changelog: this.state.changelog,
+          id: this.state.appToUpdate.id,
+          updateId: uuidv4(),
+        }
+      : Object.assign(this.state, {
+          authorAddr: this.props.address,
+          author: this.state.username,
+          updated: new Date(),
+          version: 1,
+          detailImages: this.state.detailImages.split(' '),
+          fromStore: false,
+          storeUrl: null,
+          id: uuidv4(),
+          debug: true,
+        })
 
-    const appPackage = this.state.package
     delete appProperties.username
     delete appProperties.package
     delete appProperties.deploying
@@ -66,15 +72,19 @@ class SubmitApp extends React.Component {
         {
           data: JSON.stringify(appProperties),
         },
-        this.props.wallet
+        this.props.user.wallet
       )
       .then(tx => {
         tx.addTag('Content-Type', 'application/json')
-        tx.addTag('store', 'albatross-v2-beta')
-        arweave.transactions.sign(tx, this.props.wallet).then(() => {
+        if (this.state.updating) {
+          tx.addTag('albatross-update-dev', appProperties.id)
+        } else {
+          tx.addTag('store', 'albatross-v2-beta')
+        }
+        arweave.transactions.sign(tx, this.props.user.wallet).then(() => {
           arweave.transactions.post(tx).then(response => {
             if (response.status === 200) {
-              this.checkForTransactionProgress(tx, appPackage, appProperties)
+              this.checkForTransactionProgress(tx, this.state.package, appProperties)
             }
           })
         })
@@ -103,11 +113,11 @@ class SubmitApp extends React.Component {
         {
           data: packageTx,
         },
-        this.props.wallet
+        this.props.user.wallet
       )
       .then(pTx => {
-        pTx.addTag('packageId', appProperties.id)
-        arweave.transactions.sign(pTx, this.props.wallet).then(() => {
+        pTx.addTag('packageId', this.state.updating ? appProperties.updateId : appProperties.id)
+        arweave.transactions.sign(pTx, this.props.user.wallet).then(() => {
           arweave.transactions.post(pTx).then(pResponse => {
             if (pResponse.status === 200) {
               this.props.resetApps()
@@ -196,11 +206,28 @@ class SubmitApp extends React.Component {
     )
   }
 
+  renderUpdateForm() {
+    return (
+      <div>
+        <h1>Update an app</h1>
+
+        <p>App update file (under 2mb):</p>
+        <Dropzone onSelected={files => this.handleFileUpload(files, 'package')} filename="app" />
+
+        <Textarea label="App changelog (multiline)" onChange={this.handleChange} name="changelog" />
+
+        <button className="blue waves-effect waves-light btn submit-app-button" onClick={this.submitApp}>
+          Submit App
+        </button>
+      </div>
+    )
+  }
+
   render() {
     if (this.state.deploying) {
       return this.renderDeploying()
     } else if (this.state.updating && !this.state.complexUpdating) {
-      return this.renderSubmitForm()
+      return this.renderUpdateForm()
     } else {
       return this.renderSubmitForm()
     }
@@ -208,7 +235,7 @@ class SubmitApp extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.user
+  return state
 }
 
 export default connect(
