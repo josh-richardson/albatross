@@ -114,7 +114,9 @@ class AppDetail extends React.Component {
               <span className="app-info">
                 Author: {this.state.app.author}{' '}
                 <span className="app-author">
-                  <Link to={'/user/' + this.state.app.authorAddr}>({this.state.app.authorAddr})</Link>
+                  <Link to={`/user/${this.state.app.authorAddr}/${this.state.app.author}`}>
+                    ({this.state.app.authorAddr})
+                  </Link>
                 </span>
               </span>{' '}
               | <span className="app-info">Category: {this.state.app.category}</span>

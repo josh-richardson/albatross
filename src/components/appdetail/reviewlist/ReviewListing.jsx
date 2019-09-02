@@ -110,22 +110,23 @@ class ReviewListing extends React.Component {
         ) : (
           <p>No reviews yet!</p>
         )}
-        {this.props.isLoggedIn ? (
-          <div className="submit-review">
-            <TextInput onChange={this.handleChange} value={this.state.currentReview} />
-            <StarRatingComponent
-              name="rate1"
-              starCount={5}
-              value={this.state.currentRating}
-              onStarClick={this.onStarClick.bind(this)}
-            />
-            <button className="blue waves-effect waves-light btn" onClick={() => this.postReview()}>
-              Post
-            </button>
-          </div>
-        ) : (
-          <p>Please log in to post a review!</p>
-        )}
+        {!this.props.hidePost &&
+          (this.props.isLoggedIn ? (
+            <div className="submit-review">
+              <TextInput onChange={this.handleChange} value={this.state.currentReview} />
+              <StarRatingComponent
+                name="rate1"
+                starCount={5}
+                value={this.state.currentRating}
+                onStarClick={this.onStarClick.bind(this)}
+              />
+              <button className="blue waves-effect waves-light btn" onClick={() => this.postReview()}>
+                Post
+              </button>
+            </div>
+          ) : (
+            <p>Please log in to post a review!</p>
+          ))}
       </div>
     )
   }
