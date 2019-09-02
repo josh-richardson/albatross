@@ -39,7 +39,7 @@ class AppDetail extends React.Component {
               op: 'and',
               expr1: {
                 op: 'equals',
-                expr1: 'albatross-update-dev',
+                expr1: 'albatross-update-dev1',
                 expr2: this.state.app.id,
               },
               expr2: {
@@ -64,14 +64,17 @@ class AppDetail extends React.Component {
   }
 
   installApp() {
-    //albatross-update-dev
+    const artifactId =
+      (this.state.updates.length !== 0 &&
+        this.state.updates.sort((a, b) => (a.timestamp > b.timestamp ? -1 : 1))[0].updateId) ||
+      this.state.app.id
     arweave
       .arql({
         op: 'and',
         expr1: {
           op: 'equals',
           expr1: 'packageId',
-          expr2: this.state.app.id,
+          expr2: artifactId,
         },
         expr2: {
           op: 'equals',
@@ -82,14 +85,11 @@ class AppDetail extends React.Component {
       .then(queryResult => {
         if (queryResult.length === 0) {
           Materialize.toast({ html: "Could not retrieve this app. If it's new, it may not have been mined yet!" })
-        }
-        queryResult.forEach(tx => {
-          arweave.transactions.get(tx).then(txResult => {
-            console.log(txResult)
-
-            // window.location.href = JSON.parse(txResult.get('data', { decode: true, string: true })).package
+        } else {
+          arweave.transactions.get(queryResult[0]).then(txResult => {
+            window.location.href = JSON.parse(txResult.get('data', { decode: true, string: true })).package
           })
-        })
+        }
       })
   }
 
@@ -135,7 +135,9 @@ class AppDetail extends React.Component {
                 {this.state.updates.length !== 0 && <h5>Changelog:</h5>}
 
                 {this.state.updates.map(item => (
-                  <p className="app-description">{item.changelog}</p>
+                  <p key={item.changelog} className="app-description">
+                    {item.changelog}
+                  </p>
                 ))}
 
                 <h5>Additional Details:</h5>

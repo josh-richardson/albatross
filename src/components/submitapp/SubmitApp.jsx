@@ -9,7 +9,8 @@ import { arweave, appTypes } from '../../constants'
 
 import Materialize from 'materialize-css'
 import { BounceLoader } from 'react-spinners'
-import { capitalize, uuidv4 } from '../../utils'
+import { capitalize, retrieveApps, uuidv4 } from '../../utils'
+import { addApp, finishLoading } from '../../redux/actions'
 
 class SubmitApp extends React.Component {
   constructor(props) {
@@ -49,6 +50,7 @@ class SubmitApp extends React.Component {
           changelog: this.state.changelog,
           id: this.state.appToUpdate.id,
           updateId: uuidv4(),
+          timestamp: Date.now(),
         }
       : Object.assign(this.state, {
           authorAddr: this.props.address,
@@ -77,7 +79,7 @@ class SubmitApp extends React.Component {
       .then(tx => {
         tx.addTag('Content-Type', 'application/json')
         if (this.state.updating) {
-          tx.addTag('albatross-update-dev', appProperties.id)
+          tx.addTag('albatross-update-dev1', appProperties.id)
         } else {
           tx.addTag('store', 'albatross-v2-beta')
         }
@@ -121,6 +123,7 @@ class SubmitApp extends React.Component {
           arweave.transactions.post(pTx).then(pResponse => {
             if (pResponse.status === 200) {
               this.props.resetApps()
+              retrieveApps(this.props.addApp).then(() => this.props.finishLoading())
               Materialize.toast({ html: 'App successfully uploaded to Arweave!' })
               this.props.history.push('/store/firefox')
             }
@@ -240,5 +243,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { resetApps }
+  { resetApps, addApp, finishLoading }
 )(SubmitApp)
