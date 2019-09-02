@@ -3,6 +3,7 @@ import React from 'react'
 
 import 'material-design-icons/iconfont/material-icons.css'
 import 'materialize-css/dist/css/materialize.min.css'
+import Login from './components/login/Login'
 import NavBar from './components/navbar/NavBar'
 
 import { Redirect, Route } from 'react-router-dom'
@@ -11,7 +12,6 @@ import { connect } from 'react-redux'
 import { retrieveApps } from './utils'
 import AppDetail from './components/appdetail/AppDetail'
 import Footer from './components/footer/Footer'
-import Login from './components/login/Login'
 import Profile from './components/profile/Profile'
 import SetUser from './components/setuser/SetUser'
 import Store from './components/store/Store'
@@ -54,7 +54,7 @@ class MainApp extends React.Component {
               <Route path="/store/:platform" component={Store} />
               <Route path="/details/:uuid" component={AppDetail} />
               <Route path="/submit/:uuid?" component={SubmitApp} />
-              <Route path="/user/:address" component={UserProfile} />
+              <Route path="/user/:address/:name" component={UserProfile} />
             </div>
           </div>
         </div>
