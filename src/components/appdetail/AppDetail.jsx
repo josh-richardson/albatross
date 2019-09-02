@@ -1,13 +1,14 @@
-import React from 'react'
-import 'jdenticon'
 import './AppDetail.css'
-import { BounceLoader } from 'react-spinners'
-import { CarouselProvider, Slider, Slide } from 'pure-react-carousel'
+import 'jdenticon'
 import 'pure-react-carousel/dist/react-carousel.es.css'
-import { connect } from 'react-redux'
+import { BounceLoader } from 'react-spinners'
+import { CarouselProvider, Slide, Slider } from 'pure-react-carousel'
+import { Link } from 'react-router-dom'
 import { addApp } from '../../redux/actions'
 import { arweave } from '../../constants'
+import { connect } from 'react-redux'
 import Materialize from 'materialize-css'
+import React from 'react'
 import ReviewListing from './reviewlist/ReviewListing'
 
 class AppDetail extends React.Component {
@@ -111,7 +112,10 @@ class AppDetail extends React.Component {
 
             <p>
               <span className="app-info">
-                Author: {this.state.app.author} <span className="app-author">({this.state.app.authorAddr})</span>
+                Author: {this.state.app.author}{' '}
+                <span className="app-author">
+                  <Link to={'/user/' + this.state.app.authorAddr}>({this.state.app.authorAddr})</Link>
+                </span>
               </span>{' '}
               | <span className="app-info">Category: {this.state.app.category}</span>
             </p>

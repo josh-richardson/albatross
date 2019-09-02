@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 
-import user from './user'
 import apps from './apps'
 import search from './search'
+import user from './user'
 
 export default combineReducers({ user, apps, search })

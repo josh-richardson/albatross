@@ -1,16 +1,16 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import 'jdenticon'
-import { resetApps } from '../../redux/actions'
 import './SubmitApp.css'
-import { TextInput, Textarea, Select } from 'react-materialize'
+import 'jdenticon'
+import { Select, TextInput, Textarea } from 'react-materialize'
+import { appTypes, arweave } from '../../constants'
+import { connect } from 'react-redux'
+import { resetApps } from '../../redux/actions'
 import Dropzone from '../dropzone/Dropzone'
-import { arweave, appTypes } from '../../constants'
+import React from 'react'
 
-import Materialize from 'materialize-css'
 import { BounceLoader } from 'react-spinners'
-import { capitalize, retrieveApps, uuidv4 } from '../../utils'
 import { addApp, finishLoading } from '../../redux/actions'
+import { capitalize, retrieveApps, uuidv4 } from '../../utils'
+import Materialize from 'materialize-css'
 
 class SubmitApp extends React.Component {
   constructor(props) {
@@ -20,6 +20,7 @@ class SubmitApp extends React.Component {
       deploying: false,
       platform: 'firefox',
       category: 'accessibility',
+      agreedTos: false,
     }
 
     if (this.props.match.params.uuid) {
@@ -202,7 +203,21 @@ class SubmitApp extends React.Component {
         <p>App file (under 2mb):</p>
         <Dropzone onSelected={files => this.handleFileUpload(files, 'package')} filename="app" />
 
-        <button className="blue waves-effect waves-light btn submit-app-button" onClick={this.submitApp}>
+        <p>
+          <label>
+            <input type="checkbox" onChange={() => this.setState({ agreedTos: !this.state.agreedTos })} />
+            <span>
+              This content is my own and I take full responsibility for the content that I upload. I acknowledge that
+              Albatross does not host any content displayed.
+            </span>
+          </label>
+        </p>
+
+        <button
+          className="blue waves-effect waves-light btn submit-app-button"
+          onClick={this.submitApp}
+          disabled={!this.state.agreedTos}
+        >
           Submit App
         </button>
       </div>

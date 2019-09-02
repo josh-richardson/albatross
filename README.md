@@ -36,7 +36,7 @@ A video demo is available here: https://www.youtube.com/watch?v=DXyY1X9m0Pc
 - [x] Ability to update apps
 - [x] Simple search implementation
 - [ ] User profiles
-- [ ] A simple ToS?
+- [x] A simple ToS
 
 #### Planned features:
 

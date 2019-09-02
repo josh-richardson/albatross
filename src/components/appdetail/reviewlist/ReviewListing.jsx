@@ -1,11 +1,11 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { arweave } from '../../../constants'
-import 'jdenticon'
 import './ReviewListing.css'
 import 'jdenticon'
+import 'jdenticon'
 import { TextInput } from 'react-materialize'
+import { arweave } from '../../../constants'
+import { connect } from 'react-redux'
 import Materialize from 'materialize-css'
+import React from 'react'
 import StarRatingComponent from 'react-star-rating-component'
 
 class ReviewListing extends React.Component {
@@ -51,7 +51,7 @@ class ReviewListing extends React.Component {
     this.setState({ currentReview: event.target.value })
   }
 
-  onStarClick(nextValue, prevValue, name) {
+  onStarClick(nextValue) {
     this.setState({ currentRating: nextValue })
   }
 

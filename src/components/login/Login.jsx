@@ -1,9 +1,9 @@
-import React from 'react'
+import { arweave } from '../../constants'
 import { connect } from 'react-redux'
 import { logIn } from '../../redux/actions'
 import Dropzone from '../dropzone/Dropzone'
 import Materialize from 'materialize-css'
-import { arweave } from '../../constants'
+import React from 'react'
 
 class Login extends React.Component {
   performLogin(file) {

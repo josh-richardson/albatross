@@ -1,12 +1,12 @@
-import React from 'react'
-import { Navbar, NavItem } from 'react-materialize'
+import './NavBar.css'
+import { NavItem, Navbar } from 'react-materialize'
+import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logIn, search } from '../../redux/actions'
-import './NavBar.css'
-import { NavLink } from 'react-router-dom'
 import AlbatrossIcon from './AlbatrossIcon'
-import SearchIcon from './SearchIcon'
 import PersonIcon from './PersonIcon'
+import React from 'react'
+import SearchIcon from './SearchIcon'
 
 class NavBar extends React.Component {
   constructor(props) {

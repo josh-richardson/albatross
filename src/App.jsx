@@ -1,22 +1,23 @@
-import React from 'react'
 import './App.css'
+import React from 'react'
 
-import 'materialize-css/dist/css/materialize.min.css'
 import 'material-design-icons/iconfont/material-icons.css'
+import 'materialize-css/dist/css/materialize.min.css'
 import NavBar from './components/navbar/NavBar'
 
 import { Redirect, Route } from 'react-router-dom'
-import Login from './components/login/Login'
+import { addApp, finishLoading } from './redux/actions'
+import { connect } from 'react-redux'
+import { retrieveApps } from './utils'
+import AppDetail from './components/appdetail/AppDetail'
 import Footer from './components/footer/Footer'
+import Login from './components/login/Login'
 import Profile from './components/profile/Profile'
 import SetUser from './components/setuser/SetUser'
 import Store from './components/store/Store'
-import AppDetail from './components/appdetail/AppDetail'
 import SubmitApp from './components/submitapp/SubmitApp'
 import UpdateBar from './components/updatebar/UpdateBar'
-import { connect } from 'react-redux'
-import { addApp, finishLoading } from './redux/actions'
-import { retrieveApps } from './utils'
+import UserProfile from './components/profile/UserProfile'
 
 function Index() {
   return <Redirect from="/" to="/store/firefox" />
@@ -53,6 +54,7 @@ class MainApp extends React.Component {
               <Route path="/store/:platform" component={Store} />
               <Route path="/details/:uuid" component={AppDetail} />
               <Route path="/submit/:uuid?" component={SubmitApp} />
+              <Route path="/user/:address" component={UserProfile} />
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import { arweave } from './constants'
 
 export const retrieveApps = add => {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     arweave
       .arql({
         op: 'equals',

@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from 'react'
-import { useDropzone } from 'react-dropzone'
 import './Dropzone.css'
+import { useDropzone } from 'react-dropzone'
+import React, { useCallback, useState } from 'react'
 
 const Dropzone = props => {
   const onDrop = useCallback(

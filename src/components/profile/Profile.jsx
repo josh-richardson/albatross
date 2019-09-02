@@ -1,10 +1,10 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { arweave } from '../../constants'
-import 'jdenticon'
-import { logOut } from '../../redux/actions'
 import './Profile.css'
+import 'jdenticon'
+import { arweave } from '../../constants'
+import { connect } from 'react-redux'
+import { logOut } from '../../redux/actions'
 import AppListing from '../applisting/AppListing'
+import React from 'react'
 
 class Profile extends React.Component {
   constructor(props) {
