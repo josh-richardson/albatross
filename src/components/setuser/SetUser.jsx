@@ -1,10 +1,10 @@
-import React from 'react'
 import { connect } from 'react-redux'
+import React from 'react'
 
-import 'jdenticon'
-import { logOut } from '../../redux/actions'
 import './SetUser.css'
+import 'jdenticon'
 import { TextInput } from 'react-materialize'
+import { logOut } from '../../redux/actions'
 
 class SetUser extends React.Component {
   constructor(props) {
@@ -42,7 +42,7 @@ class SetUser extends React.Component {
   render() {
     return (
       <div>
-        <p>You haven't yet set a username! Please set one below:</p>
+        <p>You haven&apos;t yet set a username! Please set one below:</p>
         <TextInput onChange={this.handleChange} />
         <div className="right">
           <button className="blue waves-effect waves-light btn" onClick={this.updateUsername}>

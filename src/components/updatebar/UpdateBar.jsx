@@ -1,9 +1,9 @@
-import React from 'react'
+import './UpdateBar.css'
+import { DEBUG } from '../../constants_dev'
+import { VERSION, arweave } from '../../constants'
 import { connect } from 'react-redux'
 import { logIn } from '../../redux/actions'
-import './UpdateBar.css'
-import { arweave, VERSION } from '../../constants'
-import { DEBUG } from '../../constants_dev'
+import React from 'react'
 
 class NavBar extends React.Component {
   constructor(props) {

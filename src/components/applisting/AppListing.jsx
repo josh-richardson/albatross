@@ -1,9 +1,9 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import 'jdenticon'
 import './AppListing.css'
-import AppBadge from './appbadge/AppBadge'
+import 'jdenticon'
 import { addApp } from '../../redux/actions'
+import { connect } from 'react-redux'
+import AppBadge from './appbadge/AppBadge'
+import React from 'react'
 
 class AppListing extends React.Component {
   render() {

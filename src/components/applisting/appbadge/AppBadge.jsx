@@ -1,8 +1,8 @@
-import React from 'react'
-import 'jdenticon'
 import './AppBadge.css'
+import 'jdenticon'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
+import React from 'react'
 
 class AppBadge extends React.Component {
   renderAppDetails() {

@@ -10,23 +10,6 @@ class Profile extends React.Component {
   constructor(props) {
     super(props)
     this.state = { username: 'unset', loading: true }
-    this.retrieveProfile = this.retrieveProfile.bind(this)
-  }
-
-  componentDidMount() {
-    if (!this.props.isLoggedIn) {
-      this.props.history.push('/login/')
-    }
-    this.retrieveProfile()
-  }
-
-  retrieveProfile() {
-    const username = localStorage.getItem('albatross_username')
-    if (username) {
-      this.setState({ username: username })
-    } else {
-      this.props.history.push('/setuser/')
-    }
   }
 
   render() {
