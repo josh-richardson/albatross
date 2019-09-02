@@ -18,7 +18,13 @@ class AppListing extends React.Component {
     return (
       <div className="app-listing">
         {relevantApps &&
-          relevantApps.map(app => <AppBadge key={app.id} app={app} showUpdate={this.props.showUpdate} />)}
+          relevantApps
+            .filter(
+              app =>
+                app.name.toLowerCase().indexOf(this.props.search.query) !== -1 ||
+                app.description.toLowerCase().indexOf(this.props.search.query) !== -1
+            )
+            .map(app => <AppBadge key={app.id} app={app} showUpdate={this.props.showUpdate} />)}
       </div>
     )
   }

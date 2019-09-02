@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navbar, NavItem } from 'react-materialize'
 import { connect } from 'react-redux'
-import { logIn } from '../../redux/actions'
+import { logIn, search } from '../../redux/actions'
 import './NavBar.css'
 import { NavLink } from 'react-router-dom'
 import AlbatrossIcon from './AlbatrossIcon'
@@ -32,7 +32,7 @@ class NavBar extends React.Component {
         {/*todo : implement search*/}
         {this.state.search ? (
           <div className="input-field col">
-            <input id="searchBox" type="search" />
+            <input id="searchBox" type="search" onChange={e => this.props.search(e.target.value.toLowerCase())} />
           </div>
         ) : (
           <span />
@@ -77,5 +77,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { logIn }
+  { logIn, search }
 )(NavBar)

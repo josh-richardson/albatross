@@ -1,4 +1,4 @@
-import { ADD_APP, FINISH_LOADING, LOG_IN, LOG_OUT, RESET_APPS } from './actionTypes'
+import { ADD_APP, FINISH_LOADING, LOG_IN, LOG_OUT, RESET_APPS, SEARCH } from './actionTypes'
 
 export const logIn = (wallet, pubKey, balance) => ({
   type: LOG_IN,
@@ -26,4 +26,11 @@ export const resetApps = () => ({
 
 export const logOut = () => ({
   type: LOG_OUT,
+})
+
+export const search = query => ({
+  type: SEARCH,
+  payload: {
+    query: query,
+  },
 })

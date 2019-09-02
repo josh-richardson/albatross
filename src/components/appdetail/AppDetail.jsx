@@ -58,16 +58,15 @@ class AppDetail extends React.Component {
     versionTransactions.forEach(tx => {
       arweave.transactions.get(tx).then(txResult => {
         const updateDetails = JSON.parse(txResult.get('data', { decode: true, string: true }))
-        this.setState({ updates: [...this.state.updates, updateDetails] })
+        this.setState({
+          updates: [...this.state.updates, updateDetails].sort((a, b) => (a.timestamp > b.timestamp ? -1 : 1)),
+        })
       })
     })
   }
 
   installApp() {
-    const artifactId =
-      (this.state.updates.length !== 0 &&
-        this.state.updates.sort((a, b) => (a.timestamp > b.timestamp ? -1 : 1))[0].updateId) ||
-      this.state.app.id
+    const artifactId = (this.state.updates.length !== 0 && this.state.updates[0].updateId) || this.state.app.id
     arweave
       .arql({
         op: 'and',
@@ -132,12 +131,14 @@ class AppDetail extends React.Component {
               <div className="app-details">
                 <p className="app-description">{this.state.app.description}</p>
 
-                {this.state.updates.length !== 0 && <h5>Changelog:</h5>}
+                {this.state.updates.length !== 0 && <h5>Changelogs:</h5>}
 
-                {this.state.updates.map(item => (
-                  <p key={item.changelog} className="app-description">
-                    {item.changelog}
-                  </p>
+                {this.state.updates.map((item, index) => (
+                  <div key={index}>
+                    <p key={item.changelog} className="app-description">
+                      <span className="bold">v{index + 2} changelog:</span> {item.changelog}
+                    </p>
+                  </div>
                 ))}
 
                 <h5>Additional Details:</h5>
