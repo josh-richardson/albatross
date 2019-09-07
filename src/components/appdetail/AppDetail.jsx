@@ -1,11 +1,11 @@
 import './AppDetail.css'
 import 'jdenticon'
 import 'pure-react-carousel/dist/react-carousel.es.css'
+import { ALBATROSS_APP_PKG_TAG, ALBATROSS_UPDATE_TAG, arweave, isBlink, isFirefox } from '../../constants'
 import { BounceLoader } from 'react-spinners'
 import { CarouselProvider, Slide, Slider } from 'pure-react-carousel'
 import { Link } from 'react-router-dom'
 import { addApp } from '../../redux/actions'
-import { arweave } from '../../constants'
 import { connect } from 'react-redux'
 import Materialize from 'materialize-css'
 import React from 'react'
@@ -14,7 +14,7 @@ import ReviewListing from './reviewlist/ReviewListing'
 class AppDetail extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { app: null, updates: [] }
+    this.state = { app: null, updates: [], fileNameMappings: { firefox: '.xpi', chrome: '.crx', android: 'apk' } }
   }
 
   componentDidMount() {
@@ -40,7 +40,7 @@ class AppDetail extends React.Component {
               op: 'and',
               expr1: {
                 op: 'equals',
-                expr1: 'albatross-update-dev1',
+                expr1: ALBATROSS_UPDATE_TAG,
                 expr2: this.state.app.id,
               },
               expr2: {
@@ -66,6 +66,29 @@ class AppDetail extends React.Component {
     })
   }
 
+  saveFile(blob, filename) {
+    if (window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, filename)
+    } else {
+      const a = document.createElement('a')
+      document.body.appendChild(a)
+      const url = window.URL.createObjectURL(blob)
+      a.href = url
+      if (
+        this.state.app.platform === 'android' ||
+        (this.state.app.platform === 'firefox' && isBlink) ||
+        (this.state.app.platform === 'chrome' && isFirefox)
+      ) {
+        a.download = filename
+      }
+      a.click()
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url)
+        document.body.removeChild(a)
+      }, 0)
+    }
+  }
+
   installApp() {
     const artifactId = (this.state.updates.length !== 0 && this.state.updates[0].updateId) || this.state.app.id
     arweave
@@ -73,7 +96,7 @@ class AppDetail extends React.Component {
         op: 'and',
         expr1: {
           op: 'equals',
-          expr1: 'packageId',
+          expr1: ALBATROSS_APP_PKG_TAG,
           expr2: artifactId,
         },
         expr2: {
@@ -87,7 +110,12 @@ class AppDetail extends React.Component {
           Materialize.toast({ html: "Could not retrieve this app. If it's new, it may not have been mined yet!" })
         } else {
           arweave.transactions.get(queryResult[0]).then(txResult => {
-            window.location.href = JSON.parse(txResult.get('data', { decode: true, string: true })).package
+            const fileData = JSON.parse(txResult.get('data', { decode: true, string: true })).package
+            fetch(fileData)
+              .then(res => res.blob())
+              .then(blob =>
+                this.saveFile(blob, `${this.state.app.name}.${this.state.fileNameMappings[this.state.app.platform]} `)
+              )
           })
         }
       })

@@ -1,8 +1,8 @@
 import './ReviewListing.css'
 import 'jdenticon'
 import 'jdenticon'
+import { ALBATROSS_REVIEW_TAG, arweave } from '../../../constants'
 import { TextInput } from 'react-materialize'
-import { arweave } from '../../../constants'
 import { connect } from 'react-redux'
 import Materialize from 'materialize-css'
 import React from 'react'
@@ -11,6 +11,7 @@ import StarRatingComponent from 'react-star-rating-component'
 class ReviewListing extends React.Component {
   constructor(props) {
     super(props)
+    console.log(props)
     this.state = { reviews: [], currentReview: '', currentRating: 5 }
     this.retrieveReviews = this.retrieveReviews.bind(this)
     this.postReview = this.postReview.bind(this)
@@ -35,7 +36,7 @@ class ReviewListing extends React.Component {
       )
       .then(tx => {
         tx.addTag('Content-Type', 'application/json')
-        tx.addTag('albatross-review-beta-v3', this.props.currentAppId)
+        tx.addTag(ALBATROSS_REVIEW_TAG, this.props.currentAppId)
         arweave.transactions.sign(tx, this.props.wallet).then(() => {
           arweave.transactions.post(tx).then(response => {
             if (response.status === 200) {
@@ -56,21 +57,36 @@ class ReviewListing extends React.Component {
   }
 
   retrieveReviews() {
-    arweave
-      .arql({
-        op: 'equals',
-        expr1: 'albatross-review-v1',
-        expr2: this.props.currentAppId,
-      })
-      .then(queryResult => {
-        queryResult.forEach(tx => {
-          arweave.transactions.get(tx).then(txResult => {
-            arweave.wallets
-              .ownerToAddress(txResult.owner)
-              .then(resultAddress => this.setReviews(txResult, resultAddress))
-          })
+    if (this.props.userAddress) {
+      arweave
+        .arql({
+          op: 'equals',
+          expr1: 'from',
+          expr2: this.props.userAddress,
         })
+        .then(queryResult => {
+          console.log(queryResult)
+        })
+    } else {
+      arweave
+        .arql({
+          op: 'equals',
+          expr1: ALBATROSS_REVIEW_TAG,
+          expr2: this.props.currentAppId,
+        })
+        .then(queryResult => {
+          this.processReviewTransactions(queryResult)
+        })
+    }
+  }
+
+  processReviewTransactions(queryResult) {
+    this.setState({ reviews: [] })
+    queryResult.forEach(tx => {
+      arweave.transactions.get(tx).then(txResult => {
+        arweave.wallets.ownerToAddress(txResult.owner).then(resultAddress => this.setReviews(txResult, resultAddress))
       })
+    })
   }
 
   setReviews(txResult, resultAddress) {

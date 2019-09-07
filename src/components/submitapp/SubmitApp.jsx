@@ -1,7 +1,7 @@
 import './SubmitApp.css'
 import 'jdenticon'
+import { ALBATROSS_APP_PKG_TAG, ALBATROSS_MANIFEST_TAG, ALBATROSS_UPDATE_TAG, appTypes, arweave } from '../../constants'
 import { Select, TextInput, Textarea } from 'react-materialize'
-import { appTypes, arweave } from '../../constants'
 import { connect } from 'react-redux'
 import { resetApps } from '../../redux/actions'
 import Dropzone from '../dropzone/Dropzone'
@@ -80,9 +80,9 @@ class SubmitApp extends React.Component {
       .then(tx => {
         tx.addTag('Content-Type', 'application/json')
         if (this.state.updating) {
-          tx.addTag('albatross-update-dev1', appProperties.id)
+          tx.addTag(ALBATROSS_UPDATE_TAG, appProperties.id)
         } else {
-          tx.addTag('store', 'albatross-v2-beta')
+          tx.addTag(ALBATROSS_MANIFEST_TAG, 'albatross-v2-beta')
         }
         arweave.transactions.sign(tx, this.props.user.wallet).then(() => {
           arweave.transactions.post(tx).then(response => {
@@ -119,7 +119,7 @@ class SubmitApp extends React.Component {
         this.props.user.wallet
       )
       .then(pTx => {
-        pTx.addTag('packageId', this.state.updating ? appProperties.updateId : appProperties.id)
+        pTx.addTag(ALBATROSS_APP_PKG_TAG, this.state.updating ? appProperties.updateId : appProperties.id)
         arweave.transactions.sign(pTx, this.props.user.wallet).then(() => {
           arweave.transactions.post(pTx).then(pResponse => {
             if (pResponse.status === 200) {
