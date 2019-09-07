@@ -1,6 +1,6 @@
 import './UpdateBar.css'
+import { ALBATROSS_RELEASE_TAG, VERSION, arweave } from '../../constants'
 import { DEBUG } from '../../constants_dev'
-import { VERSION, arweave } from '../../constants'
 import { connect } from 'react-redux'
 import { logIn } from '../../redux/actions'
 import React from 'react'
@@ -22,7 +22,7 @@ class NavBar extends React.Component {
         },
         expr2: {
           op: 'equals',
-          expr1: 'albatross-release',
+          expr1: ALBATROSS_RELEASE_TAG,
           expr2: DEBUG ? 'beta' : 'production',
         },
       })

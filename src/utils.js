@@ -1,11 +1,11 @@
-import { arweave } from './constants'
+import { ALBATROSS_MANIFEST_TAG, arweave } from './constants'
 
 export const retrieveApps = add => {
   return new Promise(resolve => {
     arweave
       .arql({
         op: 'equals',
-        expr1: 'store',
+        expr1: ALBATROSS_MANIFEST_TAG,
         expr2: 'albatross-v2-beta',
       })
       .then(queryResult => {

@@ -6,7 +6,7 @@ import AppListing from '../applisting/AppListing'
 import React from 'react'
 import ReviewListing from '../appdetail/reviewlist/ReviewListing'
 
-class Profile extends React.Component {
+class UserProfile extends React.Component {
   constructor(props) {
     super(props)
     this.state = { username: 'unset', loading: true }
@@ -28,7 +28,7 @@ class Profile extends React.Component {
 
         <h4>Submitted Reviews:</h4>
 
-        <ReviewListing hidePost={true} />
+        <ReviewListing userAddress={this.props.match.params.address} hidePost={true} />
       </div>
     )
   }
@@ -41,4 +41,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { logOut }
-)(Profile)
+)(UserProfile)
