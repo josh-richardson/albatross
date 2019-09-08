@@ -7,8 +7,6 @@ import React from 'react'
 
 class AppListing extends React.Component {
   render() {
-    console.log(this.props)
-
     let relevantApps = this.props.apps.entries
     if (this.props.platform) {
       relevantApps = relevantApps.filter(app => app.platform.toLowerCase() === this.props.platform.toLowerCase())

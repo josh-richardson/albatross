@@ -2,6 +2,7 @@ import './ReviewListing.css'
 import 'jdenticon'
 import 'jdenticon'
 import { ALBATROSS_REVIEW_TAG, arweave } from '../../../constants'
+import { Link } from 'react-router-dom'
 import { TextInput } from 'react-materialize'
 import { connect } from 'react-redux'
 import Materialize from 'materialize-css'
@@ -11,7 +12,6 @@ import StarRatingComponent from 'react-star-rating-component'
 class ReviewListing extends React.Component {
   constructor(props) {
     super(props)
-    console.log(props)
     this.state = { reviews: [], currentReview: '', currentRating: 5 }
     this.retrieveReviews = this.retrieveReviews.bind(this)
     this.postReview = this.postReview.bind(this)
@@ -20,6 +20,12 @@ class ReviewListing extends React.Component {
 
   componentDidMount() {
     this.retrieveReviews()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.loading) {
+      this.retrieveReviews()
+    }
   }
 
   postReview() {
@@ -57,17 +63,28 @@ class ReviewListing extends React.Component {
   }
 
   retrieveReviews() {
-    if (this.props.userAddress) {
-      arweave
-        .arql({
-          op: 'equals',
-          expr1: 'from',
-          expr2: this.props.userAddress,
-        })
-        .then(queryResult => {
-          console.log(queryResult)
-        })
-    } else {
+    this.setState({ reviews: [] })
+    if (this.props.userAddress && this.props.entries.length !== 0) {
+      this.props.entries.forEach(a => {
+        arweave
+          .arql({
+            op: 'and',
+            expr1: {
+              op: 'equals',
+              expr1: ALBATROSS_REVIEW_TAG,
+              expr2: a.id,
+            },
+            expr2: {
+              op: 'equals',
+              expr1: 'from',
+              expr2: this.props.userAddress,
+            },
+          })
+          .then(queryResult => {
+            this.processReviewTransactions(queryResult)
+          })
+      })
+    } else if (!this.props.userAddress) {
       arweave
         .arql({
           op: 'equals',
@@ -81,7 +98,6 @@ class ReviewListing extends React.Component {
   }
 
   processReviewTransactions(queryResult) {
-    this.setState({ reviews: [] })
     queryResult.forEach(tx => {
       arweave.transactions.get(tx).then(txResult => {
         arweave.wallets.ownerToAddress(txResult.owner).then(resultAddress => this.setReviews(txResult, resultAddress))
@@ -109,16 +125,18 @@ class ReviewListing extends React.Component {
     return (
       <div className="review-listing">
         {this.state.reviews && this.state.reviews.length ? (
-          this.state.reviews.map(app => {
+          this.state.reviews.map(rev => {
             return (
-              <div key={app.addr} className="review">
+              <div key={rev.addr} className="review">
                 <div className="review-header">
-                  <svg width="36" height="36" data-jdenticon-value={app.addr} />
-                  <p>{app.username}</p>
-                  <StarRatingComponent starCount={5} value={app.rating} />
+                  <svg width="36" height="36" data-jdenticon-value={rev.addr} />
+                  <Link to={`/user/${rev.addr}/${rev.username}`}>
+                    <p>{rev.username}</p>
+                  </Link>
+                  <StarRatingComponent starCount={5} value={rev.rating} />
                 </div>
                 <p className="clamped-para" onClick={evt => evt.currentTarget.classList.remove('clamped-para')}>
-                  {app.review}
+                  {rev.review}
                 </p>
               </div>
             )
@@ -149,7 +167,7 @@ class ReviewListing extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.user
+  return state.apps
 }
 
 export default connect(mapStateToProps)(ReviewListing)
