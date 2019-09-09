@@ -85,7 +85,7 @@ class AppDetail extends React.Component {
       setTimeout(() => {
         window.URL.revokeObjectURL(url)
         document.body.removeChild(a)
-      }, 0)
+      }, 30000)
     }
   }
 
