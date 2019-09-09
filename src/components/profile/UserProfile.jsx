@@ -24,7 +24,7 @@ class UserProfile extends React.Component {
         </div>
 
         <h4>Submitted Apps:</h4>
-        <AppListing address={this.props.match.params.address} showUpdate={true} />
+        <AppListing address={this.props.match.params.address} showUpdate={false} />
 
         <h4>Submitted Reviews:</h4>
 

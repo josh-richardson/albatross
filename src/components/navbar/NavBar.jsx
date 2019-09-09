@@ -16,6 +16,7 @@ class NavBar extends React.Component {
 
   render() {
     return (
+      //todo: remove react-materialize as it isn't customizable enough - insert custom menu icon
       <Navbar
         className="blue darken-2"
         brand={
