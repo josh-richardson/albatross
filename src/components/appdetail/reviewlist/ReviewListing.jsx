@@ -4,6 +4,7 @@ import 'jdenticon'
 import { ALBATROSS_REVIEW_TAG, arweave } from '../../../constants'
 import { Link } from 'react-router-dom'
 import { TextInput } from 'react-materialize'
+import { api } from '../../../api'
 import { connect } from 'react-redux'
 import Materialize from 'materialize-css'
 import React from 'react'
@@ -29,28 +30,19 @@ class ReviewListing extends React.Component {
   }
 
   postReview() {
-    arweave
-      .createTransaction(
-        {
-          data: JSON.stringify({
-            review: this.state.currentReview,
-            rating: this.state.currentRating,
-            username: localStorage.getItem('albatross_username'),
-          }),
-        },
-        this.props.wallet
+    api
+      .sendTransaction(
+        JSON.stringify({
+          review: this.state.currentReview,
+          rating: this.state.currentRating,
+          username: localStorage.getItem('albatross_username'),
+        }),
+        this.props.user.wallet,
+        { 'Content-Type': 'application/json', ALBATROSS_REVIEW_TAG: this.props.currentAppId }
       )
-      .then(tx => {
-        tx.addTag('Content-Type', 'application/json')
-        tx.addTag(ALBATROSS_REVIEW_TAG, this.props.currentAppId)
-        arweave.transactions.sign(tx, this.props.wallet).then(() => {
-          arweave.transactions.post(tx).then(response => {
-            if (response.status === 200) {
-              Materialize.toast({ html: 'Review successfully posted! It should be visible within ten minutes.' })
-              this.setState({ currentReview: '' })
-            }
-          })
-        })
+      .then(() => {
+        Materialize.toast({ html: 'Review successfully posted! It should be visible within ten minutes.' })
+        this.setState({ currentReview: '' })
       })
   }
 
@@ -64,8 +56,8 @@ class ReviewListing extends React.Component {
 
   retrieveReviews() {
     this.setState({ reviews: [] })
-    if (this.props.userAddress && this.props.entries.length !== 0) {
-      this.props.entries.forEach(a => {
+    if (this.props.userAddress && this.props.apps.entries.length !== 0) {
+      this.props.apps.entries.forEach(a => {
         arweave
           .arql({
             op: 'and',
@@ -77,14 +69,14 @@ class ReviewListing extends React.Component {
             expr2: {
               op: 'equals',
               expr1: 'from',
-              expr2: this.props.userAddress,
+              expr2: this.props.user.userAddress,
             },
           })
           .then(queryResult => {
             this.processReviewTransactions(queryResult)
           })
       })
-    } else if (!this.props.userAddress) {
+    } else if (!this.props.user.userAddress) {
       arweave
         .arql({
           op: 'equals',
@@ -133,7 +125,7 @@ class ReviewListing extends React.Component {
                   <Link to={`/user/${rev.addr}/${rev.username}`}>
                     <p>{rev.username}</p>
                   </Link>
-                  <StarRatingComponent starCount={5} value={rev.rating} />
+                  <StarRatingComponent starCount={5} value={rev.rating} name={'rating'} />
                 </div>
                 <p className="clamped-para" onClick={evt => evt.currentTarget.classList.remove('clamped-para')}>
                   {rev.review}
@@ -145,7 +137,7 @@ class ReviewListing extends React.Component {
           <p>No reviews yet!</p>
         )}
         {!this.props.hidePost &&
-          (this.props.isLoggedIn ? (
+          (this.props.user.isLoggedIn ? (
             <div className="submit-review">
               <TextInput onChange={this.handleChange} value={this.state.currentReview} />
               <StarRatingComponent
@@ -167,7 +159,7 @@ class ReviewListing extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.apps
+  return state
 }
 
 export default connect(mapStateToProps)(ReviewListing)

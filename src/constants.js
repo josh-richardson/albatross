@@ -24,7 +24,7 @@ export const appTypes = [
 const isDev = '_self' in React.createElement('div')
 
 export const ALBATROSS_APP_PKG_TAG = 'packageId'
-export const ALBATROSS_REVIEW_TAG = 'albatross-review-beta-v3'
+export const ALBATROSS_REVIEW_TAG = 'albatross-review-beta-dev'
 export const ALBATROSS_MANIFEST_TAG = 'store'
 export const ALBATROSS_RELEASE_TAG = 'albatross-release'
 export const ALBATROSS_UPDATE_TAG = isDev ? 'albatross-update-dev1' : 'albatross-update-v1'

@@ -154,7 +154,7 @@ class AppDetail extends React.Component {
                 {this.state.app.detailImages.map(src => {
                   return (
                     <Slide key={src}>
-                      <img src={src} alt="App Screenshots" />
+                      <img className={'slider-image'} src={src} alt="App Screenshots" />
                     </Slide>
                   )
                 })}

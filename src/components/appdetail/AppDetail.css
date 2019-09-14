@@ -1,57 +1,61 @@
 .carousel {
-    max-width: 640px;
-    display: block;
-    margin: auto;
+  max-width: 640px;
+  display: block;
+  margin: auto;
 }
 
 .app-info:first-of-type {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 .app-info {
-    margin-left: 5px;
-    margin-right: 5px;
-    color: #646464;
+  margin-left: 5px;
+  margin-right: 5px;
+  color: #646464;
 }
 
 .app-header-container {
-    display: flex;
+  display: flex;
 }
 
 .app-icon {
-    max-width: 64px;
-    max-height: 64px;
-    margin-top: 10px;
+  max-width: 64px;
+  max-height: 64px;
+  margin-top: 10px;
+  margin-right: 5px;
+  border-radius: 5px;
 }
 
 .app-install-button {
-    float: right;
-    margin-top: 25px;
+  float: right;
+  margin-top: 25px;
 }
-
 
 .app-description {
-    white-space: pre-wrap;
+  white-space: pre-wrap;
 }
-
 
 .app-author {
-    font-size: 0.8em;
-    color: black;
+  font-size: 0.8em;
+  color: black;
 }
 
-
 .details-review-split {
-    margin-top: 20px;
-    display: flex;
+  margin-top: 20px;
+  display: flex;
 }
 
 .app-details {
-    flex-basis: 60%;
-    padding-right: 10px;
+  flex-basis: 60%;
+  padding-right: 10px;
 }
 
 .app-reviews {
-    flex-basis: 40%;
-    padding-left: 10px;
+  flex-basis: 40%;
+  padding-left: 10px;
+}
+
+.slider-image {
+  max-width: 100%;
+  max-height: 50%;
 }

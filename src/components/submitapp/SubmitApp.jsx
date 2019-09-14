@@ -11,6 +11,7 @@ import { BounceLoader } from 'react-spinners'
 import { addApp, finishLoading } from '../../redux/actions'
 import { capitalize, retrieveApps, uuidv4 } from '../../utils'
 import Materialize from 'materialize-css'
+import { api } from '../../api'
 
 class SubmitApp extends React.Component {
   constructor(props) {
@@ -51,6 +52,7 @@ class SubmitApp extends React.Component {
           changelog: this.state.changelog,
           id: this.state.appToUpdate.id,
           updateId: uuidv4(),
+          updated: new Date(),
           timestamp: Date.now(),
         }
       : Object.assign(this.state, {
@@ -69,28 +71,26 @@ class SubmitApp extends React.Component {
     delete appProperties.package
     delete appProperties.deploying
 
-    this.setState({ deploying: true })
-    arweave
-      .createTransaction(
-        {
-          data: JSON.stringify(appProperties),
-        },
-        this.props.user.wallet
+    for (let key in appProperties) {
+      if (appProperties[key] === undefined || appProperties[key] === null) {
+        Materialize.toast({ html: `Please check the form! Propery ${key} must be defined!` })
+        return
+      }
+    }
+
+    api
+      .sendTransaction(
+        JSON.stringify(appProperties),
+        this.props.user.wallet,
+        Object.assign(
+          this.state.updating
+            ? { ALBATROSS_UPDATE_TAG: appProperties.id }
+            : { ALBATROSS_MANIFEST_TAG: 'albatross-v2-beta' },
+          { 'Content-Type': 'application/json' }
+        )
       )
-      .then(tx => {
-        tx.addTag('Content-Type', 'application/json')
-        if (this.state.updating) {
-          tx.addTag(ALBATROSS_UPDATE_TAG, appProperties.id)
-        } else {
-          tx.addTag(ALBATROSS_MANIFEST_TAG, 'albatross-v2-beta')
-        }
-        arweave.transactions.sign(tx, this.props.user.wallet).then(() => {
-          arweave.transactions.post(tx).then(response => {
-            if (response.status === 200) {
-              this.checkForTransactionProgress(tx, this.state.package, appProperties)
-            }
-          })
-        })
+      .then((res, tx) => {
+        this.checkForTransactionProgress(tx, this.state.package, appProperties)
       })
   }
 
@@ -110,26 +110,15 @@ class SubmitApp extends React.Component {
   }
 
   uploadAppPayload(appPackage, appProperties) {
-    let packageTx = JSON.stringify({ package: appPackage })
-    arweave
-      .createTransaction(
-        {
-          data: packageTx,
-        },
-        this.props.user.wallet
-      )
-      .then(pTx => {
-        pTx.addTag(ALBATROSS_APP_PKG_TAG, this.state.updating ? appProperties.updateId : appProperties.id)
-        arweave.transactions.sign(pTx, this.props.user.wallet).then(() => {
-          arweave.transactions.post(pTx).then(pResponse => {
-            if (pResponse.status === 200) {
-              this.props.resetApps()
-              retrieveApps(this.props.addApp).then(() => this.props.finishLoading())
-              Materialize.toast({ html: 'App successfully uploaded to Arweave!' })
-              this.props.history.push('/store/firefox')
-            }
-          })
-        })
+    api
+      .sendTransaction(JSON.stringify({ package: appPackage }), this.props.user.wallet, {
+        ALBATROSS_APP_PKG_TAG: this.state.updating ? appProperties.updateId : appProperties.id,
+      })
+      .then(() => {
+        this.props.resetApps()
+        retrieveApps(this.props.addApp).then(() => this.props.finishLoading())
+        Materialize.toast({ html: 'App successfully uploaded to Arweave!' })
+        this.props.history.push('/store/firefox')
       })
   }
 

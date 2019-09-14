@@ -9,11 +9,14 @@ class AppListing extends React.Component {
   render() {
     let relevantApps = this.props.apps.entries
     if (this.props.platform) {
-      relevantApps = relevantApps.filter(app => app.platform.toLowerCase() === this.props.platform.toLowerCase())
+      relevantApps = relevantApps.filter(
+        app => app.platform && app.platform.toLowerCase() === this.props.platform.toLowerCase()
+      )
     } else if (this.props.address) {
-      relevantApps = relevantApps.filter(app => app.authorAddr.toLowerCase() === this.props.address.toLowerCase())
+      relevantApps = relevantApps.filter(
+        app => (app.authorAddr && app.authorAddr.toLowerCase() === this.props.address.toLowerCase()) || true
+      )
     }
-
     return (
       <div className="app-listing">
         {relevantApps &&
