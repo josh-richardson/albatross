@@ -1,4 +1,4 @@
-import { ADD_APP, FINISH_LOADING, LOG_IN, LOG_OUT, RESET_APPS, SEARCH } from './actionTypes'
+import { ADD_APP, FINISH_LOADING, LOG_IN, LOG_OUT, RESET_APPS, SEARCH } from './action_types'
 
 export const logIn = (wallet, pubKey, balance) => ({
   type: LOG_IN,

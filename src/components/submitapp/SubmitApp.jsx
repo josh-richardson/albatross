@@ -1,7 +1,7 @@
 import './SubmitApp.css'
 import 'jdenticon'
-import { ALBATROSS_APP_PKG_TAG, ALBATROSS_MANIFEST_TAG, ALBATROSS_UPDATE_TAG, appTypes, arweave } from '../../constants'
 import { Select, TextInput, Textarea } from 'react-materialize'
+import { appTypes, arweave } from '../../constants'
 import { connect } from 'react-redux'
 import { resetApps } from '../../redux/actions'
 import Dropzone from '../dropzone/Dropzone'
@@ -9,9 +9,9 @@ import React from 'react'
 
 import { BounceLoader } from 'react-spinners'
 import { addApp, finishLoading } from '../../redux/actions'
-import { capitalize, retrieveApps, uuidv4 } from '../../utils'
-import Materialize from 'materialize-css'
 import { api } from '../../api'
+import { capitalize, uuidv4 } from '../../utils'
+import Materialize from 'materialize-css'
 
 class SubmitApp extends React.Component {
   constructor(props) {
@@ -116,7 +116,7 @@ class SubmitApp extends React.Component {
       })
       .then(() => {
         this.props.resetApps()
-        retrieveApps(this.props.addApp).then(() => this.props.finishLoading())
+        api.retrieveApps(this.props.addApp).then(() => this.props.finishLoading())
         Materialize.toast({ html: 'App successfully uploaded to Arweave!' })
         this.props.history.push('/store/firefox')
       })
