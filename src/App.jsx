@@ -8,8 +8,8 @@ import NavBar from './components/navbar/NavBar'
 
 import { Redirect, Route } from 'react-router-dom'
 import { addApp, finishLoading } from './redux/actions'
+import { api } from './api'
 import { connect } from 'react-redux'
-import { retrieveApps } from './utils'
 import AppDetail from './components/appdetail/AppDetail'
 import Footer from './components/footer/Footer'
 import Profile from './components/profile/Profile'
@@ -36,7 +36,7 @@ class MainApp extends React.Component {
   }
 
   componentDidMount() {
-    retrieveApps(this.props.addApp).then(() => this.props.finishLoading())
+    api.retrieveApps(this.props.addApp).then(() => this.props.finishLoading())
   }
 
   render() {

@@ -1,28 +1,3 @@
-import { ALBATROSS_MANIFEST_TAG, arweave } from './constants'
-
-export const retrieveApps = add => {
-  return new Promise(resolve => {
-    arweave
-      .arql({
-        op: 'equals',
-        expr1: ALBATROSS_MANIFEST_TAG,
-        expr2: 'albatross-v2-beta',
-      })
-      .then(queryResult => {
-        let counter = queryResult.length
-        queryResult.forEach(tx => {
-          arweave.transactions.get(tx).then(txResult => {
-            const txObject = JSON.parse(txResult.get('data', { decode: true, string: true }))
-            add(txObject)
-            if (--counter === 0) {
-              resolve()
-            }
-          })
-        })
-      })
-  })
-}
-
 export const uuidv4 = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     // eslint-disable-next-line no-mixed-operators

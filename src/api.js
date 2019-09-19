@@ -1,4 +1,4 @@
-import { arweave } from './constants'
+import { ALBATROSS_MANIFEST_TAG, arweave } from './constants'
 
 export class api {
   static sendTransaction(data, wallet, tags) {
@@ -33,6 +33,55 @@ export class api {
             .catch(e => {
               reject(e)
             })
+        })
+    })
+  }
+
+  static allOfQuery(query) {
+    let results = []
+    return new Promise((resolve, reject) => {
+      arweave
+        .arql(query)
+        .then(queryResult => {
+          queryResult.forEach(tx => {
+            arweave.transactions
+              .get(tx)
+              .then(txResult => {
+                results.push(txResult)
+                if (results.length === queryResult.length) {
+                  resolve(results)
+                }
+              })
+              .catch(e => {
+                reject(e)
+              })
+          })
+        })
+        .catch(e => {
+          reject(e)
+        })
+    })
+  }
+
+  static retrieveApps(add) {
+    return new Promise(resolve => {
+      arweave
+        .arql({
+          op: 'equals',
+          expr1: ALBATROSS_MANIFEST_TAG,
+          expr2: 'albatross-v2-beta',
+        })
+        .then(queryResult => {
+          let counter = queryResult.length
+          queryResult.forEach(tx => {
+            arweave.transactions.get(tx).then(txResult => {
+              const txObject = JSON.parse(txResult.get('data', { decode: true, string: true }))
+              add(txObject)
+              if (--counter === 0) {
+                resolve()
+              }
+            })
+          })
         })
     })
   }

@@ -1,5 +1,5 @@
 import './index.css'
-import * as serviceWorker from './serviceWorker'
+import * as serviceWorker from './service_worker'
 import { HashRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import App from './App'

@@ -1,4 +1,4 @@
-import { ADD_APP, FINISH_LOADING, RESET_APPS } from '../actionTypes'
+import { ADD_APP, FINISH_LOADING, RESET_APPS } from '../action_types'
 
 const initialState = {
   entries: [],
