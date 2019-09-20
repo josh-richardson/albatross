@@ -1,11 +1,12 @@
 import './AppDetail.css'
 import 'jdenticon'
 import 'pure-react-carousel/dist/react-carousel.es.css'
-import { ALBATROSS_APP_PKG_TAG, ALBATROSS_UPDATE_TAG, arweave, isBlink, isFirefox } from '../../constants'
 import { BounceLoader } from 'react-spinners'
 import { CarouselProvider, Slide, Slider } from 'pure-react-carousel'
 import { Link } from 'react-router-dom'
 import { addApp } from '../../redux/actions'
+import { api } from '../../api'
+import { arweave, isBlink, isFirefox } from '../../constants'
 import { connect } from 'react-redux'
 import Materialize from 'materialize-css'
 import React from 'react'
@@ -18,16 +19,16 @@ class AppDetail extends React.Component {
   }
 
   componentDidMount() {
-    this.updateCurrentApp()
+    this.checkForUpdates()
   }
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.apps.loading && !this.props.app) {
-      this.updateCurrentApp(nextProps)
+      this.checkForUpdates(nextProps)
     }
   }
 
-  updateCurrentApp(props) {
+  checkForUpdates(props) {
     props = props || this.props
     if (props.apps.loading === false) {
       this.setState(
@@ -35,35 +36,15 @@ class AppDetail extends React.Component {
           app: props.apps.entries.filter(x => x.id === props.match.params.uuid)[0],
         },
         () => {
-          arweave
-            .arql({
-              op: 'and',
-              expr1: {
-                op: 'equals',
-                expr1: ALBATROSS_UPDATE_TAG,
-                expr2: this.state.app.id,
-              },
-              expr2: {
-                op: 'equals',
-                expr1: 'from',
-                expr2: this.state.app.authorAddr,
-              },
+          api.retrieveAppUpdates(this.state.app.id, this.state.app.authorAddr, txResult => {
+            const updateDetails = JSON.parse(txResult.get('data', { decode: true, string: true }))
+            this.setState({
+              updates: [...this.state.updates, updateDetails].sort((a, b) => (a.timestamp > b.timestamp ? -1 : 1)),
             })
-            .then(result => this.handleAppUpdateVersions(result))
+          })
         }
       )
     }
-  }
-
-  handleAppUpdateVersions(versionTransactions) {
-    versionTransactions.forEach(tx => {
-      arweave.transactions.get(tx).then(txResult => {
-        const updateDetails = JSON.parse(txResult.get('data', { decode: true, string: true }))
-        this.setState({
-          updates: [...this.state.updates, updateDetails].sort((a, b) => (a.timestamp > b.timestamp ? -1 : 1)),
-        })
-      })
-    })
   }
 
   saveFile(blob, filename) {
@@ -90,35 +71,21 @@ class AppDetail extends React.Component {
   }
 
   installApp() {
-    const artifactId = (this.state.updates.length !== 0 && this.state.updates[0].updateId) || this.state.app.id
-    arweave
-      .arql({
-        op: 'and',
-        expr1: {
-          op: 'equals',
-          expr1: ALBATROSS_APP_PKG_TAG,
-          expr2: artifactId,
-        },
-        expr2: {
-          op: 'equals',
-          expr1: 'from',
-          expr2: this.state.app.authorAddr,
-        },
-      })
-      .then(queryResult => {
-        if (queryResult.length === 0) {
-          Materialize.toast({ html: "Could not retrieve this app. If it's new, it may not have been mined yet!" })
-        } else {
-          arweave.transactions.get(queryResult[0]).then(txResult => {
-            const fileData = JSON.parse(txResult.get('data', { decode: true, string: true })).package
-            fetch(fileData)
-              .then(res => res.blob())
-              .then(blob =>
-                this.saveFile(blob, `${this.state.app.name}.${this.state.fileNameMappings[this.state.app.platform]} `)
-              )
-          })
-        }
-      })
+    const artifactId = this.state.updates.length !== 0 ? this.state.updates[0].updateId : this.state.app.id
+    api.retrieveApplicationPackageTransactions(artifactId, this.state.app.authorAddr, queryResult => {
+      if (queryResult.length === 0) {
+        Materialize.toast({ html: "Could not retrieve this app. If it's new, it may not have been mined yet!" })
+      } else {
+        arweave.transactions.get(queryResult[0]).then(txResult => {
+          const fileData = JSON.parse(txResult.get('data', { decode: true, string: true })).package
+          fetch(fileData)
+            .then(res => res.blob())
+            .then(blob =>
+              this.saveFile(blob, `${this.state.app.name}${this.state.fileNameMappings[this.state.app.platform]}`)
+            )
+        })
+      }
+    })
   }
 
   render() {

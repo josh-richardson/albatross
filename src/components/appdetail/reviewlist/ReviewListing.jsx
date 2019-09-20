@@ -1,10 +1,9 @@
 import './ReviewListing.css'
 import 'jdenticon'
-import 'jdenticon'
-import { ALBATROSS_REVIEW_TAG, arweave } from '../../../constants'
 import { Link } from 'react-router-dom'
 import { TextInput } from 'react-materialize'
 import { api } from '../../../api'
+import { arweave } from '../../../constants'
 import { connect } from 'react-redux'
 import Materialize from 'materialize-css'
 import React from 'react'
@@ -56,60 +55,35 @@ class ReviewListing extends React.Component {
 
   retrieveReviews() {
     this.setState({ reviews: [] })
+
+    const processResult = txResult => {
+      arweave.wallets.ownerToAddress(txResult.owner).then(resultAddress => this.setReviews(txResult, resultAddress))
+    }
     if (this.props.userAddress && this.props.apps.entries.length !== 0) {
       this.props.apps.entries.forEach(a => {
-        arweave
-          .arql({
-            op: 'and',
-            expr1: {
-              op: 'equals',
-              expr1: ALBATROSS_REVIEW_TAG,
-              expr2: a.id,
-            },
-            expr2: {
-              op: 'equals',
-              expr1: 'from',
-              expr2: this.props.user.userAddress,
-            },
-          })
-          .then(queryResult => {
-            this.processReviewTransactions(queryResult)
-          })
+        api.retrieveAppReviewsByUser(a, this.props.userAddress, processResult)
       })
-    } else if (!this.props.user.userAddress) {
-      arweave
-        .arql({
-          op: 'equals',
-          expr1: ALBATROSS_REVIEW_TAG,
-          expr2: this.props.currentAppId,
-        })
-        .then(queryResult => {
-          this.processReviewTransactions(queryResult)
-        })
+    } else if (!this.props.userAddress) {
+      api.retrieveAppReviews(this.props.currentAppId, processResult)
     }
-  }
-
-  processReviewTransactions(queryResult) {
-    queryResult.forEach(tx => {
-      arweave.transactions.get(tx).then(txResult => {
-        arweave.wallets.ownerToAddress(txResult.owner).then(resultAddress => this.setReviews(txResult, resultAddress))
-      })
-    })
   }
 
   setReviews(txResult, resultAddress) {
     const reviewBody = JSON.parse(txResult.get('data', { decode: true, string: true }))
     this.setState({
-      reviews: [
-        ...this.state.reviews,
-        {
-          for: this.props.currentAppId,
-          rating: reviewBody.rating,
-          review: reviewBody.review,
-          addr: resultAddress,
-          username: reviewBody.username,
-        },
-      ],
+      reviews:
+        this.state.reviews.filter(r => r.addr === resultAddress).length !== 0
+          ? this.state.reviews
+          : [
+              ...this.state.reviews,
+              {
+                for: this.props.currentAppId,
+                rating: reviewBody.rating,
+                review: reviewBody.review,
+                addr: resultAddress,
+                username: reviewBody.username,
+              },
+            ],
     })
   }
 
