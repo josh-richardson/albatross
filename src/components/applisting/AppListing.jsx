@@ -14,19 +14,22 @@ class AppListing extends React.Component {
       )
     } else if (this.props.address) {
       relevantApps = relevantApps.filter(
-        app => (app.authorAddr && app.authorAddr.toLowerCase() === this.props.address.toLowerCase()) || true
+        app => app.authorAddr && app.authorAddr.toLowerCase() === this.props.address.toLowerCase()
       )
     }
     return (
       <div className="app-listing">
-        {relevantApps &&
+        {relevantApps.length !== 0 ? (
           relevantApps
             .filter(
               app =>
                 app.name.toLowerCase().indexOf(this.props.search.query) !== -1 ||
                 app.description.toLowerCase().indexOf(this.props.search.query) !== -1
             )
-            .map(app => <AppBadge key={app.id} app={app} showUpdate={this.props.showUpdate} />)}
+            .map(app => <AppBadge key={app.id} app={app} showUpdate={this.props.showUpdate} />)
+        ) : (
+          <p>None yet!</p>
+        )}
       </div>
     )
   }

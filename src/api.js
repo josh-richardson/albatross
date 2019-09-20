@@ -1,4 +1,12 @@
-import { ALBATROSS_MANIFEST_TAG, arweave } from './constants'
+import {
+  ALBATROSS_APP_PKG_TAG,
+  ALBATROSS_MANIFEST_TAG,
+  ALBATROSS_RELEASE_TAG,
+  ALBATROSS_REVIEW_TAG,
+  ALBATROSS_UPDATE_TAG,
+  arweave,
+} from './constants'
+import { DEBUG } from './constants_dev'
 
 export class api {
   static sendTransaction(data, wallet, tags) {
@@ -65,24 +73,116 @@ export class api {
 
   static retrieveApps(add) {
     return new Promise(resolve => {
-      arweave
-        .arql({
-          op: 'equals',
-          expr1: ALBATROSS_MANIFEST_TAG,
-          expr2: 'albatross-v2-beta',
-        })
-        .then(queryResult => {
-          let counter = queryResult.length
-          queryResult.forEach(tx => {
-            arweave.transactions.get(tx).then(txResult => {
-              const txObject = JSON.parse(txResult.get('data', { decode: true, string: true }))
-              add(txObject)
-              if (--counter === 0) {
-                resolve()
-              }
-            })
-          })
-        })
+      this.allOfQuery({
+        op: 'equals',
+        expr1: ALBATROSS_MANIFEST_TAG,
+        expr2: 'albatross-v2-beta',
+      }).then(results => {
+        for (let i = 0; i < results.length; i++) {
+          add(JSON.parse(results[i].get('data', { decode: true, string: true })))
+        }
+        resolve()
+      })
     })
+  }
+
+  static retrieveAppReviewsByUser(app, userAddress, processResult) {
+    api
+      .allOfQuery({
+        op: 'and',
+        expr1: {
+          op: 'equals',
+          expr1: ALBATROSS_REVIEW_TAG,
+          expr2: app.id,
+        },
+        expr2: {
+          op: 'equals',
+          expr1: 'from',
+          expr2: userAddress,
+        },
+      })
+      .then(results => {
+        results.forEach(txResult => {
+          processResult(txResult)
+        })
+      })
+  }
+
+  static retrieveAppReviews(appId, processResult) {
+    api
+      .allOfQuery({
+        op: 'equals',
+        expr1: ALBATROSS_REVIEW_TAG,
+        expr2: appId,
+      })
+      .then(queryResult => {
+        queryResult.forEach(txResult => {
+          processResult(txResult)
+        })
+      })
+  }
+
+  static retrieveAppUpdates(appId, authorAddr, processResult) {
+    api
+      .allOfQuery({
+        op: 'and',
+        expr1: {
+          op: 'equals',
+          expr1: ALBATROSS_UPDATE_TAG,
+          expr2: appId,
+        },
+        expr2: {
+          op: 'equals',
+          expr1: 'from',
+          expr2: authorAddr,
+        },
+      })
+      .then(result => {
+        result.forEach(txResult => {
+          processResult(txResult)
+        })
+      })
+  }
+
+  static retrieveApplicationPackageTransactions(artifactId, authorAddr, processResult) {
+    arweave
+      .arql({
+        op: 'and',
+        expr1: {
+          op: 'equals',
+          expr1: ALBATROSS_APP_PKG_TAG,
+          expr2: artifactId,
+        },
+        expr2: {
+          op: 'equals',
+          expr1: 'from',
+          expr2: authorAddr,
+        },
+      })
+      .then(queryResult => {
+        processResult(queryResult)
+      })
+  }
+
+  static checkForNewerAlbatross(processResult) {
+    api
+      .allOfQuery({
+        op: 'and',
+        expr1: {
+          op: 'equals',
+          expr1: 'from',
+          expr2: 'tIf0wLp418uknaNKxi-GVUM-1Xh7jPyAfISoBozpICU',
+        },
+        expr2: {
+          op: 'equals',
+          expr1: ALBATROSS_RELEASE_TAG,
+          expr2: DEBUG ? 'beta' : 'production',
+        },
+      })
+      .then(queryResult => {
+        queryResult.forEach(txResult => {
+          processResult(txResult)
+        })
+      })
   }
 }
