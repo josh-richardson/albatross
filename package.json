@@ -49,7 +49,7 @@
     "pure-react-carousel": "^1.21.1",
     "react": "^16.8.6",
     "react-app-polyfill": "^1.0.1",
-    "react-dev-utils": "^9.0.1",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.8.6",
     "react-dropzone": "^10.1.5",
     "react-materialize": "^3.3.3",
